@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faArrowAltCircleLeft, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faArrowAltCircleLeft, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../../components/dosen_sidebar';
 import Link from 'next/link';
@@ -13,42 +13,34 @@ import Login from '../../../components/login';
 import { kelasService } from '../../../services';
 import { useState } from 'react';
 import moment from "moment";
+import { v4 as uuidv4 } from 'uuid';
+
 export default function Tambah({profil, prodis, semesters}){
     const [stateFormMessage, setStateFormMessage] = useState({});
     const { register, handleSubmit, formState } = useForm();
     const { errors } = formState;
-
     async function onSubmit(data) {
-        const id_kelas = Math.floor(Math.random() * 100000000000);
-        const kode_kelas = Math.floor(Math.random() * 100000000000);
+        const id_kelas = uuidv4();
+        const kode_kelas = uuidv4();
         const data_smt  = data.semester.split("_");
         const data_prodi  = data.prodi.split("_");
         const kelas = {
             "id_kelas": id_kelas,
             "nama_kelas": data.nm_kelas,
-            "kode_kelas": kode_kelas,
+            "kode_kelas": kelasService.kodeKelas(5),
             "semester": data_smt[0],
             "nama_semester": data_smt[1],
             "prodi": data_prodi[0],
             "nama_prodi": data_prodi[1],
-            "nim_nidn": data.nim_nidn,
-            "_id_user": data._id,
+            "nim_nidn": profil.nim_nidn,
+            "_id_user": profil._id,
             "createAt": moment().format("DD-MM-YYYY hh:mm:ss"),
             "updateAt": moment().format("DD-MM-YYYY hh:mm:ss"),
-            "nama_dosen": data.name,
-            "delete": "1"
+            "nama_dosen": profil.name,
+            "delete": "0"
         }
         const result = await kelasService.saveKelas(kelas);
-        if (result.error) {
-            setStateFormMessage(result);
-        } else{
-            Cookies.set('data', result.data.accessToken);
-            if (result.data.tipe==='dosen') {
-                router.push('/dosen/beranda');
-            }else{
-                router.push('/mahasiswa/beranda');
-            }
-        }
+        setStateFormMessage(result);
     }
   
     return(
@@ -85,7 +77,13 @@ export default function Tambah({profil, prodis, semesters}){
 
                                 {stateFormMessage.error && (            
                                     <div className="alert alert-danger" role="alert">
-                                    <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
+                                        <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
+                                    </div>
+                                )}
+
+                                {stateFormMessage.error===false && (            
+                                    <div className="alert alert-primary" role="alert">
+                                        <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
                                     </div>
                                 )}
                                 

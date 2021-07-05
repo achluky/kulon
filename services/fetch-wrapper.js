@@ -5,7 +5,7 @@ export const fetchWrapper = {
     delete: _delete
 };
 
-async function get(url, token) {
+async function get(url) {
     const requestOptions = {
         method: 'GET',
     };
@@ -13,7 +13,7 @@ async function get(url, token) {
     return handleResponse(response);
 }
 
-async function post(url, data, token) {
+async function post(url, data) {
     const requestOptions = {
         method: 'POST',
         headers: { 
@@ -25,7 +25,7 @@ async function post(url, data, token) {
     return handleResponse(response);
 }
 
-async function put(url, body, token) {
+async function put(url, body) {
     const requestOptions = {
         method: 'PUT',
         headers: { 
@@ -37,7 +37,7 @@ async function put(url, body, token) {
     return handleResponse(response);
 }
 
-async function _delete(url, token) {
+async function _delete(url) {
     const requestOptions = {
         method: 'DELETE',
     };

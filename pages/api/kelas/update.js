@@ -1,9 +1,10 @@
 
+
 import { connectToDatabase } from "../../../utility/mongodb";
 export default async (req, res) => {
     const { db } = await connectToDatabase();
-    if (req.method === 'POST') 
-    {
+    if (req.method === 'PUT') 
+    {   
         if(!req.body.nama_kelas){
             res.json(
                 {
@@ -27,17 +28,26 @@ export default async (req, res) => {
             )
         }else{
             const data = req.body;
+            const query = { id_kelas: data.id_kelas };
+            const value = { $set: {
+                                    nama_kelas: data.nama_kelas, 
+                                    semester: data.semester, 
+                                    nama_semester: data.nama_semester, 
+                                    prodi: data.prodi , 
+                                    nama_prodi:  data.nama_prodi, 
+                                    updateAt: data.updateAt} 
+                        };
             const kelas = await db
                         .collection("data__kelas")
-                        .insertOne(data);
+                        .updateOne(query, value);
             if (!kelas) {
-                res.status(200).json({error: true, message: 'Data gagal disimpan'});
+                res.status(200).json({error: true, message: 'Data gagal diperbaharui'});
                 return;
             }else{
                 res.status(200).json(
                     {
                         error : false,
-                        message : "Data berhasil disimpan",
+                        message : "Data berhasil diperbaharui",
                         data: data
                     }
                 );

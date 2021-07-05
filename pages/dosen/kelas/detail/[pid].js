@@ -58,7 +58,7 @@ export default function Detail({kelas, profil}){
                                     <div className="row">
                                         <label  className="col-sm-3 col-form-label">Jumlah Peserta</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {kelas.id_kelas}</label>
+                                        <label className="col-sm-10 col-form-label">: </label>
                                         </div>
                                     </div>
                                     <div className=" row">

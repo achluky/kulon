@@ -1,43 +1,33 @@
-
 import { connectToDatabase } from "../../../utility/mongodb";
 export default async (req, res) => {
     const { db } = await connectToDatabase();
-    if (req.method === 'POST') 
-    {
-        if(!req.body.nama_kelas){
+    if (req.method === 'PUT') 
+    {   
+        if(!req.body.id_kelas){
             res.json(
                 {
                     "error": true,
-                    "message": "Masukan Nama Kelas"
-                }
-            )
-        }else if(!req.body.semester){
-            res.json(
-                {
-                    "error": true,
-                    "message": "Masukan Semester Kelas Dilakukan"
-                }
-            )
-        }else if(!req.body.prodi){
-            res.json(
-                {
-                    "error": true,
-                    "message": "Masukan Program Studi"
+                    "message": "Masukan Id Kelas"
                 }
             )
         }else{
             const data = req.body;
+            const query = { id_kelas: data.id_kelas };
+            const value = { $set: {
+                                    delete:  "1"
+                                } 
+                        };
             const kelas = await db
                         .collection("data__kelas")
-                        .insertOne(data);
+                        .updateOne(query, value);
             if (!kelas) {
-                res.status(200).json({error: true, message: 'Data gagal disimpan'});
+                res.status(200).json({error: true, message: 'Data gagal Dihapus'});
                 return;
             }else{
                 res.status(200).json(
                     {
                         error : false,
-                        message : "Data berhasil disimpan",
+                        message : "Data berhasil Dihapus",
                         data: data
                     }
                 );
@@ -49,7 +39,7 @@ export default async (req, res) => {
         res.json(
             {
                 "error": true,
-                "message": "Method must be POST"
+                "message": "Method must be DELETE"
             }
         )
     }
