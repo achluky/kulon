@@ -2,3 +2,4 @@ export * from './auth.service';
 export * from './kelas.service';
 export * from './modul.service';
 export * from './soal.service';
+export * from './pengumuman.service';
