@@ -13,16 +13,17 @@ export default function Masuk({profil}){
     return (
         <>
             {profil ? (
-            <main>
-                <p>Anda Sudah Login</p>
+            <main className="text-center">
+                <p>Selamat Datang <b>{profil.name}</b><br />
+                Anda login sebagai {profil.tipe}</p>
                 <Link href={"/" +profil.tipe + "/beranda"}>
                     <a className="btn btn-primary mr-2">
-                        <FontAwesomeIcon icon={ faHome }/>  Beranda {profil.tipe}
+                        <FontAwesomeIcon icon={ faHome }/>  Beranda {profil.tipe.charAt(0) .toUpperCase() + profil.tipe.slice(1) .toLowerCase()}
                     </a>
                 </Link>
             </main>
             ) : (
-                <Login  />
+                <Login />
             )}
         </>
     ) 
