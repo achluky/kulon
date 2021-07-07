@@ -11,7 +11,7 @@ export default function dosen_sidebar() {
                   <li className="list-group-item" aria-current="true"><FontAwesomeIcon icon={ faHome }/>{' '}Beranda</li>
                 </Link>
                 <Link href={'/dosen/kelas'}>
-                  <li className="list-group-item"><FontAwesomeIcon icon={ faBookReader }/>{' '}Kelas</li>
+                  <li className="list-group-item"><FontAwesomeIcon icon={ faBookReader }/>{' '}Kelas Anda</li>
                 </Link>
                 <Link href={'/dosen/modul'}>
                   <li className="list-group-item"><FontAwesomeIcon icon={ faListAlt }/>{' '}Modul</li>

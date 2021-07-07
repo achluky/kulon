@@ -3,7 +3,7 @@ export default async (req, res) => {
     const { db } = await connectToDatabase();
     if (req.method === 'PUT') 
     {   
-        if(!req.body.id_modul){
+        if(!req.body.id_soal){
             res.json(
                 {
                     "error": true,
@@ -12,13 +12,13 @@ export default async (req, res) => {
             )
         }else{
             const data = req.body;
-            const query = { id_modul: data.id_modul };
+            const query = { id_soal: data.id_soal };
             const value = { $set: {
                                     delete:  "1"
                             }
                         };
             const kelas = await db
-                        .collection("data__modul")
+                        .collection("data__soal")
                         .updateOne(query, value);
             if (!kelas) {
                 res.status(200).json({error: true, message: 'Data gagal Dihapus'});

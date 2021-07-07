@@ -30,16 +30,29 @@ export default function Edit({modul, profil, prodis, semesters}){
     async function onSubmit(data) {
         const data_smt  = data.semester.split("_");
         const data_prodi  = data.prodi.split("_");
-        const modul = {
-            "id_modul": data.id_modul,
-            "nama_modul": data.nama_modul,
-            "nama_file": data.nama_file[0].name,
-            "deskripsi_modul": data.deskripsi_modul,
-            "semester": data_smt[0],
-            "nama_semester": data_smt[1],
-            "prodi": data_prodi[0],
-            "nama_prodi": data_prodi[1],
-            "updateAt": moment().format("DD-MM-YYYY hh:mm:ss")
+        if (data.nama_file[0]) {
+            const modul = {
+                "id_modul": data.id_modul,
+                "nama_modul": data.nama_modul,
+                "nama_file": data.nama_file[0].name,
+                "deskripsi_modul": data.deskripsi_modul,
+                "semester": data_smt[0],
+                "nama_semester": data_smt[1],
+                "prodi": data_prodi[0],
+                "nama_prodi": data_prodi[1],
+                "updateAt": moment().format("DD-MM-YYYY hh:mm:ss")
+            }
+        }else{
+            const modul = {
+                "id_modul": data.id_modul,
+                "nama_modul": data.nama_modul,
+                "deskripsi_modul": data.deskripsi_modul,
+                "semester": data_smt[0],
+                "nama_semester": data_smt[1],
+                "prodi": data_prodi[0],
+                "nama_prodi": data_prodi[1],
+                "updateAt": moment().format("DD-MM-YYYY hh:mm:ss")
+            }
         }
         const result = await modulService.updateModul(modul);
         setStateFormMessage(result);
@@ -127,11 +140,11 @@ export default function Edit({modul, profil, prodis, semesters}){
                                         <input
                                             type="file"
                                             className="form-control"
-                                            {...register("nama_file", { required: true })}
+                                            {...register("nama_file", { required: false })}
                                         />
                                     </div>
                                     <div className="d-grid gap-2">
-                                        <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary btn-lg mr-2">
+                                        <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary mr-2">
                                             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
                                             <FontAwesomeIcon icon={ faSave }/> Perbaharui Data
                                         </button>

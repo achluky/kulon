@@ -9,37 +9,37 @@ import {
     verifyToken
 } from '../../utility/utils';
 import Login from '../../components/login';
-import { kelasService } from '../../services';
+import { modulService } from '../../services';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-export default function Kelas({kelas, profil}) {
+export default function Kelas({modul, profil}) {
     const [stateFormMessage, setStateFormMessage] = useState({});
     const router = useRouter();
     const refreshData = () => {
         router.replace(router.asPath);
     }
     
-    function deleteKelas(id_kelas) {
+    function deleteModul(id_modul) {
         Swal.fire({
             type: 'question',
             title: 'Konfirmasi',
-            text: "Apakah Anda Yakin akan Menghapus Data Kelas?",
+            text: "Apakah Anda Yakin akan Menghapus Data Modul?",
             timer: 3000,
             showCancelButton: true
         }).then(data => {
             if (data.value === true) {
-               deleteApi(id_kelas)
+               deleteApi(id_modul)
             }
         })
     }
 
-    async function deleteApi(id_kelas) {
+    async function deleteApi(id_modul) {
         const data = {
-            id_kelas : id_kelas
+            id_modul : id_modul
         }
-        const result = await kelasService.deleteKelas(data);
+        const result = await modulService.deleteModul(data);
         setStateFormMessage(result);
         if (result.error === false) {
             refreshData();
@@ -93,25 +93,25 @@ export default function Kelas({kelas, profil}) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        {kelas.map((kls, index) => (
+                                        {modul.map((mod, index) => (
                                             <tr key={index}>
                                                 <td scope="row">{++index}</td>
-                                                <td>{kls.nama_modul}</td>
-                                                <td>{kls.nama_semester}</td>
-                                                <td>{kls.nama_prodi}</td>
+                                                <td>{mod.nama_modul}</td>
+                                                <td>{mod.nama_semester}</td>
+                                                <td>{mod.nama_prodi}</td>
                                                 <td width={228}>
                                                     <div className="btn-group" role="group" aria-label="Basic example">
-                                                        <Link href= {"/dosen/modul/edit/"+kls.id_modul+""} >
+                                                        <Link href= {"/dosen/modul/edit/"+mod.id_modul+""} >
                                                             <button type="button" className="btn btn-primary btn-sm">
                                                                 <FontAwesomeIcon icon={ faEdit }/> Edit 
                                                             </button>
                                                         </Link>
-                                                        <Link href={"/dosen/modul/detail/"+kls.id_modul+""}>
+                                                        <Link href={"/dosen/modul/detail/"+mod.id_modul+""}>
                                                             <button type="button" className="btn btn-primary btn-sm">
                                                                 <FontAwesomeIcon icon={ faSearch }/> Detail 
                                                             </button>
                                                         </Link>
-                                                        <button type="button" className="btn btn-danger btn-sm" onClick={() => deleteKelas(kls.id_modul)} >
+                                                        <button type="button" className="btn btn-danger btn-sm" onClick={() => deleteModul(mod.id_modul)} >
                                                             <FontAwesomeIcon icon={ faTrash }/> Delete 
                                                         </button>
                                                     </div>
@@ -139,13 +139,13 @@ export async function getServerSideProps(context) {
     const profil = data ? verifyToken(data) : '';
     const baseApiUrl = `${origin}/api/modul`;
     const result = await fetch(baseApiUrl)
-    const kelas = await result.json();
+    const modul = await result.json();
 
     return {
         props: {
             baseApiUrl,
             profil,
-            kelas: kelas,
+            modul: modul,
         },
     };
 }

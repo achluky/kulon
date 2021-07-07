@@ -51,7 +51,7 @@ export default function Login() {
                         <input type="password" className="form-control" placeholder="Password" {...register("password", {required: true})} />
                         <label>Password</label>
                     </div>
-                    <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary btn-lg mr-2">
+                    <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary mr-2">
                         {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
                         <FontAwesomeIcon icon={ faSignInAlt }/> Masuk
                     </button>

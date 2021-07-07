@@ -1,67 +1,64 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faArrowAltCircleLeft, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleLeft, faSave, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import Side from '../../../components/dosen_sidebar';
+
+import Side from '../../../../components/dosen_sidebar';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import {
     absoluteUrl,
     getAppCookies,
     verifyToken
-} from '../../../utility/utils';
-import Login from '../../../components/login';
-import { soalService } from '../../../services';
+} from '../../../../utility/utils';
+import Login from '../../../../components/login';
+import { soalService } from '../../../../services';
 import { useState } from 'react';
 import moment from "moment";
-import { v4 as uuidv4 } from 'uuid';
 
-
-export default function Tambah({profil, prodis, semesters}){
+export default function Edit({soal, profil, prodis, semesters}){
     const [stateFormMessage, setStateFormMessage] = useState({});
-    const { register, handleSubmit, formState } = useForm();
+    const { register, handleSubmit, formState } = useForm({
+        defaultValues: {
+            id_soal: soal.id_modul,
+            nama_soal : soal.nama_modul,
+            keyword: soal.keyword,
+            semester : soal.semester+'_'+soal.nama_semester,
+            prodi : soal.prodi+'_'+soal.nama_prodi,
+            deskripsi_soal : soal.deskripsi_soal
+        }
+    });
     const { errors } = formState;
-    
     async function onSubmit(data) {
-        const id_soal = uuidv4();
         const data_smt  = data.semester.split("_");
         const data_prodi  = data.prodi.split("_");
-        const data_modul  = data.nama_modul.split("_");
-        const soal = {
-            "id_soal": id_soal,
+        const modul = {
+            "id_soal": data.id_soal,
             "nama_soal": data.nama_soal,
-            "id_modul": data_modul[0],
-            "nama_modul": data_modul[1],
-            "keyword": data.keyword,
             "deskripsi_soal": data.deskripsi_soal,
+            "keyword": data.keyword,
             "semester": data_smt[0],
             "nama_semester": data_smt[1],
             "prodi": data_prodi[0],
             "nama_prodi": data_prodi[1],
-            "nim_nidn": profil.nim_nidn,
-            "_id_user": profil._id,
-            "createAt": moment().format("DD-MM-YYYY hh:mm:ss"),
-            "updateAt": moment().format("DD-MM-YYYY hh:mm:ss"),
-            "nama_dosen": profil.name,
-            "delete": "0"
+            "updateAt": moment().format("DD-MM-YYYY hh:mm:ss")
         }
-        const result = await soalService.saveSoal(soal);
+        const result = await soalService.updateSoal(modul);
         setStateFormMessage(result);
     }
-  
     return(
-        <div>   
+        <div>
             {!profil ? (
                 <Login/>
-            ) : (            
+            ) : (       
             <div className="row">
                 <div className="col-sm-3">
                     <Side />
                 </div>
                 <div className="col-sm-9">
                     <div className="col-sm-12">
-                        <nav className="navbar navbar-light bg-light">
+                        <nav className="navbar navbar-light bg-light mb-3">
                             <div className="container-fluid">
-                                <span className="navbar-brand mb-0 h1">Tambah : Soal Latihan</span>
+                                <span className="navbar-brand mb-0 h1">Edit : Soal</span>
                                 <div className="float-end">
                                     <Link href="/dosen/soal">
                                         <button type="button" className="btn btn-primary btn-sm"><FontAwesomeIcon icon={ faArrowAltCircleLeft }/> Kembali </button>
@@ -69,18 +66,15 @@ export default function Tambah({profil, prodis, semesters}){
                                 </div>
                             </div>
                         </nav>
-                        <div className="pb-3"></div>
+
                         <div className="card">
                             <div className="card-body">
-
+                                
                                 <div className="alert alert-primary" role="alert">
                                     Tambahkan Informasi Terkait Soal. <br />
-                                    {errors.nama_soal && errors.nama_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
-                                    {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Modul wajib diisi <br /> </>}
-                                    {errors.deskripsi_soal && errors.deskripsi_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Deskripsi Soal wajib diisi <br /> </>}
+                                    {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Kelas wajib diisi <br /> </>}
                                     {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
                                     {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
-                                    {errors.keyword && errors.keyword.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Keyword wajib diisi <br /></>}
                                 </div>
 
                                 {stateFormMessage.error && (            
@@ -97,26 +91,22 @@ export default function Tambah({profil, prodis, semesters}){
                                 
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="form-floating mb-3">
-                                        <input type="text" className="form-control" placeholder="A.1" {...register("nama_soal", {required: true})} />
-                                        <label>Nama Soal</label>
+                                        <input type="hidden" className="form-control" {...register("id_soal", {required: true})} />
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <textarea className="form-control" style={{height: 100}} placeholder="Deskripsi" {...register("deskripsi_soal", {required: true})}  ></textarea>
-                                        <label>Deskripsi Soal</label>
+                                        <input type="text" className="form-control" placeholder="Nama Soal" {...register("nama_soal", {required: true})} />
+                                        <label>Judul/Nama Soal</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <input type="text" className="form-control" placeholder="A.1" {...register("keyword", {required: true})} />
-                                        <label>#Keyword</label>
+                                        <textarea className="form-control" placeholder="Deskripsi" style={{height: 100}} {...register("deskripsi_soal", {required: true})} rows={100} ></textarea>
+                                        <label>Deskripsi</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <select className="form-select" {...register("nama_modul", { required: true })} >
-                                            <option value="">Pilih Modul</option>
-                                            <option value="21d50564-abfd-48ca-85d5-9ea2e644ee8ex_Array">Array</option>
-                                        </select>
-                                        <label >Modul</label>
+                                        <input type="text" className="form-control" placeholder="#keyword" {...register("keyword", {required: true})} />
+                                        <label>Keyword</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <select className="form-select" {...register("semester", { required: true })} >
+                                        <select className="form-select" placeholder="Semester" {...register("semester", { required: true })} >
                                             <option value="">Pilih Semester</option>
                                             {semesters.map((semester)=>{
                                                 return (
@@ -127,7 +117,7 @@ export default function Tambah({profil, prodis, semesters}){
                                         <label >Semester</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <select className="form-select" {...register("prodi", { required: true })} >
+                                        <select className="form-select" placeholder="Program Studi" {...register("prodi", { required: true })} >
                                             <option value="">Pilih Prodi</option>
                                             {prodis.map((prodi)=>{
                                                 return (
@@ -140,7 +130,7 @@ export default function Tambah({profil, prodis, semesters}){
                                     <div className="d-grid gap-2">
                                         <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary mr-2">
                                             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
-                                            <FontAwesomeIcon icon={ faSave }/> Simpan Data
+                                            <FontAwesomeIcon icon={ faSave }/> Perbaharui Data
                                         </button>
                                         
                                     </div>
@@ -157,12 +147,18 @@ export default function Tambah({profil, prodis, semesters}){
     );
 }
 
+
 export async function getServerSideProps(context) {
-    const { req } = context;
+
+    const { req, query } = context;
     const { origin } = absoluteUrl(req);
     const { data } = getAppCookies(req);
-    
+
     const profil = data ? verifyToken(data) : '';
+    const baseApiUrl = `${origin}/api/soal/${query.pid}`;
+    const result = await fetch(baseApiUrl)
+    const soal = await result.json();
+
     const baseApiUrl_prodi = `${origin}/api/prodi`;
     const result_prodi = await fetch(baseApiUrl_prodi)
     const prodis = await result_prodi.json();
@@ -173,10 +169,11 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
+            baseApiUrl,
             profil,
+            soal: soal,
             prodis,
             semesters
         },
     };
-
 }
