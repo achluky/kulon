@@ -28,9 +28,9 @@ export default function Login() {
     }
     return (
             <main className={styles.form_signin}>
-                <h1 className="h3 mb-3 fw-normal title"><FontAwesomeIcon icon={ faSignInAlt }/> Login</h1>
+                <h1 className="h3 mb-3 fw-normal title text-center"><FontAwesomeIcon icon={ faSignInAlt }/> Login</h1>
                 <div className="alert alert-primary" role="alert">
-                    Gunakan NIM Untuk Username dan Password. <br />
+                    Gunakan NIM (Mahasiswa) atau NIDN (Dosen) sebagai Username dan Password. <br />
                     {errors.nim && errors.nim.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Username wajib diisi <br /> </>}
                     {errors.nim && errors.nim.type === "maxLength" && <><FontAwesomeIcon icon={ faTimesCircle }/> Username maksimal 10 kareakter <br /></> }
                     {errors.password && errors.password.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Password wajib diisi <br /></>}

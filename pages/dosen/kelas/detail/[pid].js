@@ -65,22 +65,12 @@ export default function Detail({kelas, profil}){
                                         <label  className="col-sm-3 col-form-label">Peserta</label>
                                         <div className="col-sm-9">
                                         <label className="col-sm-10 col-form-label">: {''}
-                                            <Link href="/dosen/kelas/peserta">
+                                            <Link href={"/dosen/kelas/peserta/"+ kelas.id_kelas}>
                                                 <button className="btn btn-primary btn-sm" type="submit"><FontAwesomeIcon icon={ faList }/> Daftar Peserta</button>
                                             </Link>
                                         </label>
                                         </div>
-                                    </div>
-                                    <div className=" row">
-                                        <label  className="col-sm-3 col-form-label">Nilai</label>
-                                        <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {''}
-                                            <Link href="/dosen/kelas/nilai">
-                                                <button className="btn btn-primary btn-sm" type="submit"><FontAwesomeIcon icon={ faListAlt }/> Daftar Nilai</button>
-                                            </Link>
-                                        </label>
-                                        </div>
-                                    </div>
+                                    </div>                                
                                 </div>
                             </div>
                             
