@@ -119,7 +119,6 @@ export default function Tambah({profil, prodis, semesters}){
                                             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
                                             <FontAwesomeIcon icon={ faSave }/> Simpan Data
                                         </button>
-                                        
                                     </div>
                                 </form>
                                 
