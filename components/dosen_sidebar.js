@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faListAlt, faBookReader, faHome, faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import { faListAlt, faBookReader, faHome, faUserCircle, faVolumeDown, faCode } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { faCodepen, faCodiepie } from '@fortawesome/free-brands-svg-icons';
 
 export default function dosen_sidebar() {
   return (
@@ -17,10 +18,10 @@ export default function dosen_sidebar() {
                   <li className="list-group-item"><FontAwesomeIcon icon={ faListAlt }/>{' '}Modul</li>
                 </Link>
                 <Link href={'/dosen/soal'}>
-                  <li className="list-group-item"><FontAwesomeIcon icon={ faListAlt }/>{' '}Soal</li>
+                  <li className="list-group-item"><FontAwesomeIcon icon={ faCode }/>{' '}Soal</li>
                 </Link>
                 <Link href={'/dosen/pengumuman'}>
-                  <li className="list-group-item"><FontAwesomeIcon icon={ faListAlt }/>{' '}Pengumuman</li>
+                  <li className="list-group-item"><FontAwesomeIcon icon={ faVolumeDown }/>{' '}Pengumuman</li>
                 </Link>
             </ul>
             <ul className="list-group">

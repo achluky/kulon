@@ -1,25 +1,41 @@
 import Side from '../../components/mahasiswa_sidebar';
-
-export default function Beranda(){
+import Login from '../../components/login';
+import {
+    absoluteUrl,
+    getAppCookies,
+    verifyToken,
+  } from '../../utility/utils';
+export default function Beranda({profil}){
     return(
-        <div>
-                <div className="row">
-                    <div className="col-sm-3">
-                        <Side />
-                    </div>
-                    <div className="col-sm-9">
-                        <nav className="navbar navbar-light bg-light">
-                            <div className="container-fluid">
-                                <span className="navbar-brand mb-0 h1">Beranda</span>
-                            </div>
-                        </nav>
-                        <div className="pb-3"></div>
-                        <div className="alert alert-primary" role="alert">
-                            <h6>Pengumuman</h6>
-                            A simple primary alert—check it out!
+        <>
+            {!profil ? (
+                <Login />
+            ) : (
+                <div>
+                    <div className="row">
+                        <div className="col-sm-3">
+                            <Side />
+                        </div>
+                        <div className="col-sm-9">
+                            <nav className="navbar navbar-light bg-light mb-3">
+                                <div className="container-fluid">
+                                    <span className="navbar-brand mb-0 h1">Beranda</span>
+                                </div>
+                            </nav>
                         </div>
                     </div>
                 </div>
-        </div>
+            )}
+        </>
     );
+}
+export async function getServerSideProps(context) {
+    const { req } = context;
+    const { data } = getAppCookies(req);
+    const profil = data ? verifyToken(data) : '';
+    return {
+        props: {
+            profil,
+        },
+    };
 }

@@ -13,9 +13,6 @@ export default function dosen_sidebar() {
                   <Link href={'/mahasiswa/kelas'}>
                     <li className="list-group-item"><FontAwesomeIcon icon={ faBookReader }/>{' '}Kelas</li>
                   </Link>
-                  <Link href={'/mahasiswa/modul'}>
-                    <li className="list-group-item"><FontAwesomeIcon icon={ faListAlt }/>{' '}Modul</li>
-                  </Link>
               </ul>
               <ul className="list-group">
                 <Link href={'/mahasiswa/profil'}>

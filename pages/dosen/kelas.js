@@ -143,7 +143,6 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            baseApiUrl,
             profil,
             kelas: kelas,
         },

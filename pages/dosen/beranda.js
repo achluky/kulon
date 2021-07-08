@@ -31,13 +31,10 @@ export default function Beranda({profil}){
 }
 export async function getServerSideProps(context) {
     const { req } = context;
-    const { origin } = absoluteUrl(req);
-    const baseApiUrl = `${origin}/api`;
     const { data } = getAppCookies(req);
     const profil = data ? verifyToken(data) : '';
     return {
         props: {
-            baseApiUrl,
             profil,
         },
     };

@@ -14,8 +14,7 @@ export default function Masuk({profil}){
         <>
             {profil ? (
             <main className="text-center">
-                <p>Selamat Datang <b>{profil.name}</b><br />
-                Anda login sebagai {profil.tipe}</p>
+                <p>Selamat Datang <b>{profil.name}</b>. Anda login sebagai {profil.tipe}</p>
                 <Link href={"/" +profil.tipe + "/beranda"}>
                     <a className="btn btn-primary mr-2">
                         <FontAwesomeIcon icon={ faHome }/>  Beranda {profil.tipe.charAt(0) .toUpperCase() + profil.tipe.slice(1) .toLowerCase()}

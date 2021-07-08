@@ -20,10 +20,9 @@ export default function Login() {
         } else{
             Cookies.set('data', result.data.accessToken);
             if (result.data.tipe==='dosen') {
-                // router.push('/dosen/beranda');
                 router.push(window.location.href);
             }else{
-                router.push('/mahasiswa/beranda');
+                router.push(window.location.href);
             }
         }
     }
