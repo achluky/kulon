@@ -50,9 +50,14 @@ export default function Detail({soal, profil}){
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Deskripsi Soal:</label>
+                                        <label className="col-sm-3 col-form-label">Deskripsi Soal</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">{soal.deskripsi_soal}</label>
+                                        <label className="col-sm-10 col-form-label">:</label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-sm-12">
+                                        <label className="col-sm-12 col-form-label">{soal.deskripsi_soal}</label>
                                         </div>
                                     </div>
                                     <div className="row">

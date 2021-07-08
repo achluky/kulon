@@ -99,20 +99,20 @@ export default function Kelas({kelas, profil}) {
                                                 <td>{kls.nama_kelas}</td>
                                                 <td>{kls.nama_semester}</td>
                                                 <td>{kls.nama_prodi}</td>
-                                                <td width={228}>
+                                                <td width={100}>
                                                     <div className="btn-group" role="group" aria-label="Basic example">
                                                         <Link href= {"/dosen/kelas/edit/"+kls.id_kelas+""} >
                                                             <button type="button" className="btn btn-primary btn-sm">
-                                                                <FontAwesomeIcon icon={ faEdit }/> Edit 
+                                                                <FontAwesomeIcon icon={ faEdit }/> 
                                                             </button>
                                                         </Link>
                                                         <Link href={"/dosen/kelas/detail/"+kls.id_kelas+""}>
                                                             <button type="button" className="btn btn-primary btn-sm">
-                                                                <FontAwesomeIcon icon={ faSearch }/> Detail 
+                                                                <FontAwesomeIcon icon={ faSearch }/> 
                                                             </button>
                                                         </Link>
                                                         <button type="button" className="btn btn-danger btn-sm" onClick={() => deleteKelas(kls.id_kelas)} >
-                                                            <FontAwesomeIcon icon={ faTrash }/> Delete 
+                                                            <FontAwesomeIcon icon={ faTrash }/> 
                                                         </button>
                                                     </div>
                                                 </td>

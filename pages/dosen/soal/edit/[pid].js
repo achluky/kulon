@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowAltCircleLeft, faSave, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleLeft, faSave, faTimesCircle, faCheckCircle, faFileCode, faFire } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import Side from '../../../../components/dosen_sidebar';
@@ -15,22 +15,24 @@ import { soalService } from '../../../../services';
 import { useState } from 'react';
 import moment from "moment";
 
-export default function Edit({soal, profil, prodis, semesters}){
+export default function Edit({soal, profil, prodis, semesters, modul}){
     const [stateFormMessage, setStateFormMessage] = useState({});
     const { register, handleSubmit, formState } = useForm({
         defaultValues: {
-            id_soal: soal.id_modul,
-            nama_soal : soal.nama_modul,
+            id_soal: soal.id_soal,
+            nama_soal : soal.nama_soal,
             keyword: soal.keyword,
             semester : soal.semester+'_'+soal.nama_semester,
             prodi : soal.prodi+'_'+soal.nama_prodi,
-            deskripsi_soal : soal.deskripsi_soal
+            deskripsi_soal : soal.deskripsi_soal,
+            nama_modul : soal.id_modul+'_'+soal.nama_modul
         }
     });
     const { errors } = formState;
     async function onSubmit(data) {
         const data_smt  = data.semester.split("_");
         const data_prodi  = data.prodi.split("_");
+        const data_modul  = data.nama_modul.split("_");
         const modul = {
             "id_soal": data.id_soal,
             "nama_soal": data.nama_soal,
@@ -40,6 +42,8 @@ export default function Edit({soal, profil, prodis, semesters}){
             "nama_semester": data_smt[1],
             "prodi": data_prodi[0],
             "nama_prodi": data_prodi[1],
+            "id_modul": data_modul[0],
+            "nama_modul": data_modul[1],
             "updateAt": moment().format("DD-MM-YYYY hh:mm:ss")
         }
         const result = await soalService.updateSoal(modul);
@@ -106,6 +110,17 @@ export default function Edit({soal, profil, prodis, semesters}){
                                         <label>Keyword</label>
                                     </div>
                                     <div className="form-floating mb-3">
+                                        <select className="form-select" {...register("nama_modul", { required: true })} >
+                                            <option value="">Pilih Modul</option>
+                                            {modul.map((mod)=>{
+                                                return (
+                                                    <option value={mod.id_modul+'_'+mod.nama_modul} key={mod.id_modul}>{mod.nama_modul}</option>
+                                                )
+                                            })}
+                                        </select>
+                                        <label >Modul</label>
+                                    </div>
+                                    <div className="form-floating mb-3">
                                         <select className="form-select" placeholder="Semester" {...register("semester", { required: true })} >
                                             <option value="">Pilih Semester</option>
                                             {semesters.map((semester)=>{
@@ -127,12 +142,16 @@ export default function Edit({soal, profil, prodis, semesters}){
                                         </select>
                                         <label >Program Studi</label>
                                     </div>
-                                    <div className="d-grid gap-2">
+                                    <div className="d-grid gap-2 mb-2">
                                         <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary mr-2">
                                             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
                                             <FontAwesomeIcon icon={ faSave }/> Perbaharui Data
                                         </button>
-                                        
+                                    </div>
+                                    <div className="d-grid gap-2">
+                                        <Link href={'dosen/soal/user_case'}>
+                                            <a className="w-100 btn btn-info mr-2"><FontAwesomeIcon icon={ faFire }/> Lihat Use Case</a>
+                                        </Link>
                                     </div>
                                 </form>
                                 
@@ -167,13 +186,18 @@ export async function getServerSideProps(context) {
     const result_semester = await fetch(baseApiUrl_semester)
     const semesters = await result_semester.json();
 
+    const baseApiUrl_modul = `${origin}/api/modul`;
+    const result_modul = await fetch(baseApiUrl_modul)
+    const modul = await result_modul.json();
+
     return {
         props: {
             baseApiUrl,
             profil,
             soal: soal,
             prodis,
-            semesters
+            semesters,
+            modul
         },
     };
 }

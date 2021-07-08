@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faPlusCircle, faTrash, faSearch, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../components/mahasiswa_sidebar';
 import Link from 'next/link';
@@ -59,7 +59,12 @@ export default function Kelas({kelas, profil}) {
                         <div className="col-sm-12">
                             <nav className="navbar navbar-light bg-light mb-3">
                                 <div className="container-fluid">
-                                    <span className="navbar-brand mb-0 h1">Kelas Perkuliahan</span>
+                                    <span className="navbar-brand mb-0 h1">Kelas Perkuliahan Anda</span>
+                                    <div className="float-end">
+                                        <Link href="/mahasiswa/soal/cari">
+                                            <button type="button" className="btn btn-primary btn-sm"><FontAwesomeIcon icon={ faSearch }/> Cari Kelas </button>
+                                        </Link>
+                                    </div>
                                 </div>
                             </nav>
 

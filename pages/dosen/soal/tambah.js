@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faArrowAltCircleLeft, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faArrowAltCircleLeft, faTimesCircle, faCheckCircle, faFire } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../../components/dosen_sidebar';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
 
 
-export default function Tambah({profil, prodis, semesters}){
+export default function Tambah({profil, prodis, semesters, modul}){
     const [stateFormMessage, setStateFormMessage] = useState({});
     const { register, handleSubmit, formState } = useForm();
     const { errors } = formState;
@@ -71,31 +71,36 @@ export default function Tambah({profil, prodis, semesters}){
                         </nav>
                         <div className="pb-3"></div>
                         <div className="card">
-                            <div className="card-body">
 
-                                <div className="alert alert-primary" role="alert">
-                                    Tambahkan Informasi Terkait Soal. <br />
-                                    {errors.nama_soal && errors.nama_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
-                                    {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Modul wajib diisi <br /> </>}
-                                    {errors.deskripsi_soal && errors.deskripsi_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Deskripsi Soal wajib diisi <br /> </>}
-                                    {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
-                                    {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
-                                    {errors.keyword && errors.keyword.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Keyword wajib diisi <br /></>}
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className="card-body">
+                                    <div className="alert alert-primary" role="alert">
+                                        Tambahkan Informasi Terkait Soal & User Case <br />
+                                        {errors.nama_soal && errors.nama_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
+                                        {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Modul wajib diisi <br /> </>}
+                                        {errors.deskripsi_soal && errors.deskripsi_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Deskripsi Soal wajib diisi <br /> </>}
+                                        {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
+                                        {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
+                                        {errors.keyword && errors.keyword.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Keyword wajib diisi <br /></>}
+                                    </div>
+
+                                    {stateFormMessage.error && (            
+                                        <div className="alert alert-danger" role="alert">
+                                            <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
+                                        </div>
+                                    )}
+
+                                    {stateFormMessage.error===false && (            
+                                        <div className="alert alert-primary" role="alert">
+                                            <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
+                                        </div>
+                                    )}
                                 </div>
 
-                                {stateFormMessage.error && (            
-                                    <div className="alert alert-danger" role="alert">
-                                        <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
-                                    </div>
-                                )}
-
-                                {stateFormMessage.error===false && (            
-                                    <div className="alert alert-primary" role="alert">
-                                        <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
-                                    </div>
-                                )}
+                                <span className="navbar-brand mb-0 ms-3 lead "><FontAwesomeIcon icon={ faFire }/> Informasi Soal</span>
                                 
-                                <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className="card-body">
+                                   
                                     <div className="form-floating mb-3">
                                         <input type="text" className="form-control" placeholder="A.1" {...register("nama_soal", {required: true})} />
                                         <label>Nama Soal</label>
@@ -111,7 +116,11 @@ export default function Tambah({profil, prodis, semesters}){
                                     <div className="form-floating mb-3">
                                         <select className="form-select" {...register("nama_modul", { required: true })} >
                                             <option value="">Pilih Modul</option>
-                                            <option value="21d50564-abfd-48ca-85d5-9ea2e644ee8ex_Array">Array</option>
+                                            {modul.map((mod)=>{
+                                                return (
+                                                    <option value={mod.id_modul+'_'+mod.nama_modul} key={mod.id_modul}>{mod.nama_modul}</option>
+                                                )
+                                            })}
                                         </select>
                                         <label >Modul</label>
                                     </div>
@@ -127,28 +136,107 @@ export default function Tambah({profil, prodis, semesters}){
                                         <label >Semester</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <select className="form-select" {...register("prodi", { required: true })} >
-                                            <option value="">Pilih Prodi</option>
-                                            {prodis.map((prodi)=>{
-                                                return (
-                                                    <option value={prodi.id_prodi+'_'+prodi.nama_prodi} key={prodi.id_prodi}>{prodi.nama_prodi}</option>
-                                                )
-                                            })}
-                                        </select>
-                                        <label >Program Studi</label>
+                                            <select className="form-select" {...register("prodi", { required: true })} >
+                                                <option value="">Pilih Prodi</option>
+                                                {prodis.map((prodi)=>{
+                                                    return (
+                                                        <option value={prodi.id_prodi+'_'+prodi.nama_prodi} key={prodi.id_prodi}>{prodi.nama_prodi}</option>
+                                                    )
+                                                })}
+                                            </select>
+                                            <label >Program Studi</label>
+                                        </div>
+                                </div>
+                                
+                                <span className="navbar-brand mb-0 ms-3 lead "><FontAwesomeIcon icon={ faFire }/> Mentukan Use Case (Masukan & Keluaran)</span>
+                                
+                                <div className="card-body">
+                                    <div class="row g-3">
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan1", {required: true})} />
+                                                <label>Masukan 1</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran1", {required: true})} />
+                                                <label>Keluaran  1</label>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <div class="row g-3">
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan2", {required: true})} />
+                                                <label>Masukan 2</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran2", {required: true})} />
+                                                <label>Keluaran  2</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan3", {required: true})} />
+                                                <label>Masukan 3</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran3", {required: true})} />
+                                                <label>Keluaran  3</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan4", {required: true})} />
+                                                <label>Masukan 4</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran4", {required: true})} />
+                                                <label>Keluaran  4</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan5", {required: true})} />
+                                                <label>Masukan 5</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div className="form-floating mb-3 md-1">
+                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran5", {required: true})} />
+                                                <label>Keluaran  5</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div className="card-body">
                                     <div className="d-grid gap-2">
                                         <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary mr-2">
                                             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
-                                            <FontAwesomeIcon icon={ faSave }/> Simpan Data
+                                            <FontAwesomeIcon icon={ faSave }/> Simpan Data Soal
                                         </button>
-                                        
                                     </div>
-                                </form>
-                                
-                            </div>
-                        </div>
-                        
+                                </div>
+                            </form>
+
+                        </div>                
                     </div>
                 </div>
             </div>
@@ -171,11 +259,16 @@ export async function getServerSideProps(context) {
     const result_semester = await fetch(baseApiUrl_semester)
     const semesters = await result_semester.json();
 
+    const baseApiUrl_modul = `${origin}/api/modul`;
+    const result_modul = await fetch(baseApiUrl_modul)
+    const modul = await result_modul.json();
+
     return {
         props: {
             profil,
             prodis,
-            semesters
+            semesters,
+            modul
         },
     };
 

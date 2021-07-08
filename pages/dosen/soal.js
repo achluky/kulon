@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faPlusCircle, faTrash, faSearch, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faPlusCircle, faTrash, faSearch, faTimesCircle, faCheckCircle, faFileCode } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../components/dosen_sidebar';
 import Link from 'next/link';
@@ -71,20 +71,20 @@ export default function Soal({soal, profil}) {
                 <td>{sol.nama_soal}</td>
                 <td>{sol.nama_modul}</td>
                 <td>{keyword_split(sol.keyword)}</td>
-                <td width={228}>
-                    <div className="btn-group" role="group" aria-label="Basic example">
+                <td width={100}>
+                    <div className="btn-group" role="group">
                         <Link href= {"/dosen/soal/edit/"+sol.id_soal+""} >
                             <button type="button" className="btn btn-primary btn-sm">
-                                <FontAwesomeIcon icon={ faEdit }/> Edit 
+                                <FontAwesomeIcon icon={ faEdit }/>
                             </button>
                         </Link>
                         <Link href={"/dosen/soal/detail/"+sol.id_soal+""}>
                             <button type="button" className="btn btn-primary btn-sm">
-                                <FontAwesomeIcon icon={ faSearch }/> Detail 
+                                <FontAwesomeIcon icon={ faSearch }/>
                             </button>
                         </Link>
                         <button type="button" className="btn btn-danger btn-sm" onClick={() => deleteKelas(sol.id_soal)} >
-                            <FontAwesomeIcon icon={ faTrash }/> Delete 
+                            <FontAwesomeIcon icon={ faTrash }/> 
                         </button>
                     </div>
                 </td>

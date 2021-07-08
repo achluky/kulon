@@ -21,9 +21,6 @@ export default function footer({ children }) {
         <div className="col-6 col-md">
             <h5>Referensi</h5>
             <ul className="list-unstyled text-small">
-            <li className="mb-1"><a className="link-secondary text-decoration-none" href="#">Bebras</a></li>
-            <li className="mb-1"><a className="link-secondary text-decoration-none" href="#">Detik Com</a></li>
-            <li className="mb-1"><a className="link-secondary text-decoration-none" href="#">Dzone</a></li>
             <li className="mb-1"><a className="link-secondary text-decoration-none" href="#">Github</a></li>
             <li className="mb-1"><a className="link-secondary text-decoration-none" href="#">NextJs</a></li>
             </ul>

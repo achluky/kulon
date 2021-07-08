@@ -39,11 +39,15 @@ export default async (req, res) => {
             const value = { $set: {
                                     nama_soal: data.nama_soal, 
                                     deskripsi_soal: data.deskripsi_soal,
+                                    keyword: data.keyword,
                                     semester: data.semester, 
                                     nama_semester: data.nama_semester, 
                                     prodi: data.prodi , 
                                     nama_prodi:  data.nama_prodi, 
-                                    updateAt: data.updateAt} 
+                                    id_modul: data.id_modul, 
+                                    nama_modul: data.nama_modul, 
+                                    updateAt: data.updateAt
+                            } 
                         };
             const kelas = await db
                         .collection("data__soal")

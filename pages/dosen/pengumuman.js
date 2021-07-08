@@ -53,20 +53,20 @@ export default function Soal({pengumuman, profil}) {
                 <td scope="row">{++index}</td>
                 <td>{pengumuman_.judul}</td>
                 <td>{pengumuman_.nama_semester}</td>
-                <td width={228}>
+                <td width={100}>
                     <div className="btn-group" role="group" aria-label="Basic example">
                         <Link href= {"/dosen/pengumuman/edit/"+pengumuman_.id_pengumuman+""} >
                             <button type="button" className="btn btn-primary btn-sm">
-                                <FontAwesomeIcon icon={ faEdit }/> Edit 
+                                <FontAwesomeIcon icon={ faEdit }/> 
                             </button>
                         </Link>
                         <Link href={"/dosen/pengumuman/detail/"+pengumuman_.id_pengumuman+""}>
                             <button type="button" className="btn btn-primary btn-sm">
-                                <FontAwesomeIcon icon={ faSearch }/> Detail 
+                                <FontAwesomeIcon icon={ faSearch }/> 
                             </button>
                         </Link>
                         <button type="button" className="btn btn-danger btn-sm" onClick={() => deleteKelas(pengumuman_.id_pengumuman)} >
-                            <FontAwesomeIcon icon={ faTrash }/> Delete 
+                            <FontAwesomeIcon icon={ faTrash }/> 
                         </button>
                     </div>
                 </td>

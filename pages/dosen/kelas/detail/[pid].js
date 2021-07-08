@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faListAlt, faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faList, faFire, faArrowAltCircleLeft, faPlus, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../../../components/dosen_sidebar';
 import Link from 'next/link';
@@ -29,7 +29,7 @@ export default function Detail({kelas, profil}){
                                 </div>
                             </nav>
                             <div className="pb-3"></div>
-                            <div className="card">
+                            <div className="card mb-3">
                                 <div className="card-body p-4">
                                     <div className="row">
                                         <label className="col-sm-3 col-form-label">Nama Kelas</label>
@@ -73,7 +73,39 @@ export default function Detail({kelas, profil}){
                                     </div>                                
                                 </div>
                             </div>
-                            
+
+                            <button type="button" class="btn btn-primary mb-3 text-center"><FontAwesomeIcon icon={ faPlusCircle }/> Tambahkan Materi dan Latihan Mingguan</button>
+
+                            <div className="card mb-3">
+                                <div className="card-body">
+                                    <dl className="row">
+                                        <dt className="col-sm-5">Minggu Ke-</dt>
+                                        <dd className="col-sm-7">1</dd>
+                                        <dt className="col-sm-5">Judul</dt>
+                                        <dd className="col-sm-7">Pengantar Bahasa Pemrograman</dd>
+                                        <dt className="col-sm-5">File Pendukung</dt>
+                                        <dd className="col-sm-7">Pengajar1.ppt</dd>
+                                        <dt className="col-sm-5">Soal Latihan (Kode Soal/Keyword)</dt>
+                                        <dd className="col-sm-7">F6796</dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+
+                            <div className="card">
+                                <div className="card-body">
+                                    <dl className="row">
+                                        <dt className="col-sm-5">Minggu Ke-</dt>
+                                        <dd className="col-sm-7">2</dd>
+                                        <dt className="col-sm-5">Judul</dt>
+                                        <dd className="col-sm-7">Pengantar Bahasa Pemrograman</dd>
+                                        <dt className="col-sm-5">File Pendukung</dt>
+                                        <dd className="col-sm-7">Pengajar1.ppt</dd>
+                                        <dt className="col-sm-5">Soal Latihan (Kode Soal/Keyword)</dt>
+                                        <dd className="col-sm-7">F6796</dd>
+                                    </dl>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
