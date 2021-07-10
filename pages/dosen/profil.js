@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import profilePic from '../../public/me.jpg'
+import profilePic from '../../public/me.jpeg'
 import Side from '../../components/dosen_sidebar';
 import Login
  from '../../components/login';
