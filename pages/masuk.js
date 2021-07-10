@@ -13,14 +13,23 @@ export default function Masuk({profil}){
     return (
         <>
             {profil ? (
-            <main className="text-center">
-                <p>Selamat Datang <b>{profil.name}</b>. Anda login sebagai {profil.tipe}</p>
-                <Link href={"/" +profil.tipe + "/beranda"}>
-                    <a className="btn btn-primary mr-2">
+            <section className="py-5 text-center container">
+                <div className="row py-lg-5">
+                    <div className="col-lg-6 col-md-8 mx-auto">
+                    <h1 className="fw-light">Selamat Datang <b>{profil.name}</b></h1>
+                    <p className="lead text-muted">
+                        Anda login sebagai {profil.tipe}
+                    </p>
+                    <p>
+                        <Link href="/dosen/beranda" >
+                        <a className="btn btn-primary my-2">
                         <FontAwesomeIcon icon={ faHome }/>  Beranda {profil.tipe.charAt(0) .toUpperCase() + profil.tipe.slice(1) .toLowerCase()}
-                    </a>
-                </Link>
-            </main>
+                        </a>
+                        </Link>
+                    </p>
+                    </div>
+                </div>
+            </section>
             ) : (
                 <Login />
             )}

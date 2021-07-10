@@ -21,7 +21,6 @@ export default function Tambah({profil, prodis, semesters}){
     const { errors } = formState;
     async function onSubmit(data) {
         const id_kelas = uuidv4();
-        const kode_kelas = uuidv4();
         const data_smt  = data.semester.split("_");
         const data_prodi  = data.prodi.split("_");
         const kelas = {
