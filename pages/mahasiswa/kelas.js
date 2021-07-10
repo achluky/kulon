@@ -9,43 +9,8 @@ import {
     verifyToken
 } from '../../utility/utils';
 import Login from '../../components/login';
-import { kelasService } from '../../services';
-import Swal from 'sweetalert2';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
 
 export default function Kelas({kelas, profil}) {
-    const [stateFormMessage, setStateFormMessage] = useState({});
-    const router = useRouter();
-    const refreshData = () => {
-        router.replace(router.asPath);
-    }
-    
-    function deleteKelas(id_kelas) {
-        Swal.fire({
-            type: 'question',
-            title: 'Konfirmasi',
-            text: "Apakah Anda Yakin akan Menghapus Data Kelas?",
-            timer: 3000,
-            showCancelButton: true
-        }).then(data => {
-            if (data.value === true) {
-               deleteApi(id_kelas)
-            }
-        })
-    }
-
-    async function deleteApi(id_kelas) {
-        const data = {
-            id_kelas : id_kelas
-        }
-        const result = await kelasService.deleteKelas(data);
-        setStateFormMessage(result);
-        if (result.error === false) {
-            refreshData();
-        }
-    }
-
     return(
         <div>    
             {!profil ? (
@@ -68,18 +33,6 @@ export default function Kelas({kelas, profil}) {
                                 </div>
                             </nav>
 
-                            {stateFormMessage.error && (            
-                                <div className="alert alert-danger" role="alert">
-                                    <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
-                                </div>
-                            )}
-
-                            {stateFormMessage.error===false && (            
-                                <div className="alert alert-primary" role="alert">
-                                    <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
-                                </div>
-                            )}
-                            
                             <div className="card">
                                 <div className="card-body">
                                     <table className="table">
