@@ -1,20 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faTimesCircle, faCheckCircle, faTasks } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faTimesCircle, faCheckCircle, faBookReader } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import Side from '../../components/mahasiswa_sidebar';
+import Side from '../../../components/mahasiswa_sidebar';
 import Link from 'next/link';
 import {
     absoluteUrl,
     getAppCookies,
     verifyToken
-} from '../../utility/utils';
-import Login from '../../components/login';
-import { kelasService } from '../../services';
+} from '../../../utility/utils';
+import Login from '../../../components/login';
+import { kelasService } from '../../../services';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-export default function Kelas({kelas, profil}) {
+export default function All({kelas, profil}) {
     const [stateFormMessage, setStateFormMessage] = useState({});
     const router = useRouter();
     const refreshData = () => {
@@ -59,21 +59,22 @@ export default function Kelas({kelas, profil}) {
                         <div className="col-sm-12">
                             <nav className="navbar navbar-light bg-light mb-3">
                                 <div className="container-fluid">
-                                    <span className="navbar-brand mb-0 h1">Kelas Perkuliahan Anda</span>
+                                    <span className="navbar-brand mb-0 h1">Kelas Perkuliahan</span>                            
                                     <div className="float-end">
-                                        <Link href="/mahasiswa/kelas/all">
-                                            <button type="button" className="btn btn-primary btn-sm"><FontAwesomeIcon icon={ faSearch }/> Cari Kelas </button>
+                                        <Link href="/mahasiswa/kelas">
+                                            <button type="button" className="btn btn-primary btn-sm">
+                                            <FontAwesomeIcon icon={ faBookReader }/> Kelas Anda 
+                                            </button>
                                         </Link>
                                     </div>
                                 </div>
                             </nav>
-
+                            
                             {stateFormMessage.error && (            
                                 <div className="alert alert-danger" role="alert">
                                     <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
                                 </div>
                             )}
-
                             {stateFormMessage.error===false && (            
                                 <div className="alert alert-primary" role="alert">
                                     <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
@@ -89,7 +90,7 @@ export default function Kelas({kelas, profil}) {
                                             <th scope="col">Kelas</th>
                                             <th scope="col">Semester</th>
                                             <th scope="col">Program Studi</th>
-                                            <th scope="col" width={175}>Aksi</th>
+                                            <th scope="col" width={100}>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -104,11 +105,6 @@ export default function Kelas({kelas, profil}) {
                                                         <Link href={"/mahasiswa/kelas/detail/"+kls.id_kelas+""}>
                                                             <button type="button" className="btn btn-primary btn-sm">
                                                                 <FontAwesomeIcon icon={ faSearch }/> Detail 
-                                                            </button>
-                                                        </Link>
-                                                        <Link href={"/mahasiswa/kelas/latihan/"+kls.id_kelas+""}>
-                                                            <button type="button" className="btn btn-success btn-sm">
-                                                                <FontAwesomeIcon icon={ faTasks }/> Latihan 
                                                             </button>
                                                         </Link>
                                                     </div>
@@ -134,7 +130,7 @@ export async function getServerSideProps(context) {
     const { data } = getAppCookies(req);
     
     const profil = data ? verifyToken(data) : '';
-    const baseApiUrl = `${origin}/api/kelas/mahasiswa/${profil.nim_nidn}`;
+    const baseApiUrl = `${origin}/api/kelas`;
     const result = await fetch(baseApiUrl)
     const kelas = await result.json();
 

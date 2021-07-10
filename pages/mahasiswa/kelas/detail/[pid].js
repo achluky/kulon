@@ -14,11 +14,17 @@ import { Kelas_mahasiswaService } from '../../../../services';
 import { useState } from 'react';
 import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/router';
 
 export default function Detail({kelas, profil, status_peserta_kelas}){
     const [stateFormMessage, setStateFormMessage] = useState({});
     const { register, handleSubmit, formState } = useForm();
     const { errors } = formState;
+    const router = useRouter();
+    const refreshData = () => {
+        router.replace(router.asPath);
+    }
+
     async function onSubmit(data) {
         if (data.kode_kelas ===  kelas.kode_kelas) {
             const id_kelas_mahasiswa = uuidv4();
@@ -41,6 +47,9 @@ export default function Detail({kelas, profil, status_peserta_kelas}){
             }
             const result = await Kelas_mahasiswaService.savekelas_mahasiswa(kelas_mahasiswa);
             setStateFormMessage(result);
+            if (result.error === false) {
+                refreshData();
+            }
         }else{
             setStateFormMessage({
                 error: true,
@@ -111,20 +120,16 @@ export default function Detail({kelas, profil, status_peserta_kelas}){
                                     <FontAwesomeIcon icon={ faInfoCircle }/> Masuk Ke dalam Kelas? Masukan kode kelas dari dosen anda. Klik Tombol Masuk sebagai peserta kelas. <br />
                                     {errors.kode_kelas && errors.kode_kelas.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Kode Kelas wajib diisi  </>}
                                 </div>
-
                                 {stateFormMessage.error && (            
                                     <div className="alert alert-danger" role="alert">
                                         <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
                                     </div>
                                 )}
-
                                 {stateFormMessage.error===false && (            
                                     <div className="alert alert-primary" role="alert">
                                         <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
                                     </div>
                                 )}
-
-
                                 <div className="card">
                                     <div className="card-body p-4">
                                         <div className=" row">
@@ -139,7 +144,6 @@ export default function Detail({kelas, profil, status_peserta_kelas}){
                                                         {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
                                                         <FontAwesomeIcon icon={ faUserPlus }/> Masuk Sebagai Peserta Kelas
                                                     </button>
-                                                    
                                                 </div>
                                             </form>
                                         </div>                                
@@ -168,8 +172,6 @@ export async function getServerSideProps(context) {
     const result_peserta_kelas= await fetch(baseApiUrl_peserta_kelas)
     const peserta_kelas = await result_peserta_kelas.json();
     
-    console.log(peserta_kelas.status);
-
     return {
         props: {
             profil,

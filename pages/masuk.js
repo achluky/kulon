@@ -21,7 +21,7 @@ export default function Masuk({profil}){
                         Anda login sebagai {profil.tipe}
                     </p>
                     <p>
-                        <Link href="/dosen/beranda" >
+                        <Link href={profil.tipe + "/beranda"} >
                         <a className="btn btn-primary my-2">
                         <FontAwesomeIcon icon={ faHome }/>  Beranda {profil.tipe.charAt(0) .toUpperCase() + profil.tipe.slice(1) .toLowerCase()}
                         </a>
