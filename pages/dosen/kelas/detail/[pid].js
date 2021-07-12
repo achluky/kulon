@@ -3,7 +3,7 @@ import { faList, faSave, faArrowAltCircleLeft, faTimesCircle, faPlusCircle, faCh
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../../../components/dosen_sidebar';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import {
     absoluteUrl,
     getAppCookies,
@@ -26,13 +26,14 @@ import Login from '../../../../components/login';
 import moment from "moment";
 import Swal from 'sweetalert2';
 
+
 export default function Detail({kelas, profil, kelas_material}){
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [stateFormMessage, setStateFormMessage] = useState({});
     const [stateFormMessageAccordion, setStateFormMessageAccordion] = useState({});
-    const { register, handleSubmit, formState } = useForm();
+    const {register, handleSubmit, formState } = useForm();
     const { errors } = formState;
     const router = useRouter();
     const refreshData = () => {
@@ -40,6 +41,7 @@ export default function Detail({kelas, profil, kelas_material}){
     }
 
     async function onSubmit(data) {
+        console.log(data);
         const id_kelas_material = uuidv4();
         const kelas_material = {
             "id_kelas_material": id_kelas_material,
@@ -47,6 +49,7 @@ export default function Detail({kelas, profil, kelas_material}){
             "judul": data.judul,
             "keyword_soal": data.soal,
             "materi":data.materi,
+            "deadline": data.deadline,
             "token": kelasMaterialService.token(5),
             "id_kelas": kelas.id_kelas,
             "nama_kelas":kelas.nama_kelas,
@@ -179,6 +182,7 @@ export default function Detail({kelas, profil, kelas_material}){
                                             {errors.judul && errors.judul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Judul wajib diisi <br /> </>}
                                             {errors.soal && errors.soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Soal wajib diisi <br /> </>}
                                             {errors.materi && errors.materi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Soal wajib diisi <br /> </>}
+                                            {errors.deadline && errors.deadline.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Tanggal Pengumpulan wajib diisi <br /> </>}
                                         </div>
                                         {stateFormMessage.error && (            
                                             <div className="alert alert-danger" role="alert">
@@ -220,7 +224,38 @@ export default function Detail({kelas, profil, kelas_material}){
                                         </div>
                                         <div className="form-floating mb-3">
                                             <input type="text" className="form-control" placeholder="A.1" {...register("soal", {required: true})} />
-                                            <label>Keyword Soal</label>
+                                            <label>Keyword Soal Latihan</label>
+                                        </div>
+                                        <div className="form-floating mb-3">
+                                            {/* <DatePicker
+                                                selected={startDate}
+                                                onChange={(date) => setStartDate(date)}
+                                                showTimeSelect
+                                                dateFormat="MMMM d, yyyy"
+                                                timeFormat="p"
+                                                timeIntervals={15}
+                                                dateFormat="Pp"
+                                                name="deadline"
+                                                className="form-control"
+                                            /> */}
+                                            <input type="datetime-local" className="form-control" placeholder="deadline" {...register("deadline", {required: true})} />
+                                            <label>Deadling Pengumpulan Latihan</label> {' '}
+                                            {/* <Controller
+                                                control={control}
+                                                name='deadline'
+                                                render={({ field }) => (
+                                                <DatePicker
+                                                    selected={startDate}
+                                                    placeholderText='Pilih Tanggal'
+                                                    onChange={(date) => setStartDate(date)}
+                                                    dateFormat="MM/dd/yyyy h:mm aa"
+                                                    showTimeSelect
+                                                    timeFormat="p"
+                                                    timeIntervals={15}
+                                                    dateFormat="Pp"
+                                                />
+                                            )}
+                                            /> */}
                                         </div>
                                     </Modal.Body>
                                     <Modal.Footer>
@@ -250,25 +285,29 @@ export default function Detail({kelas, profil, kelas_material}){
                             
                             <Accordion allowZeroExpanded>
                                 {kelas_material.map((item) => (
-                                    <AccordionItem key={item.uuid} uuid={item.uuid}>
+                                    <AccordionItem key={item.id_kelas_material} uuid={item.id_kelas_material}>
                                         <AccordionItemHeading>
                                             <AccordionItemButton>
                                                 Minggu Ke - {item.minggu_ke}
                                             </AccordionItemButton>
                                         </AccordionItemHeading>
                                         <AccordionItemPanel>
-                                            <dl class="row">
-                                                <dd class="col-sm-3">Judul Perkuliahan</dd>
-                                                <dd class="col-sm-9">: {item.judul}</dd>
+                                            <dl className="row">
+                                                <dd className="col-sm-4">Judul Perkuliahan</dd>
+                                                <dd className="col-sm-8">: {item.judul}</dd>
 
-                                                <dd class="col-sm-3">Materi</dd>
-                                                <dd class="col-sm-9">: {item.materi}</dd>
+                                                <dd className="col-sm-4">Materi</dd>
+                                                <dd className="col-sm-8">: {item.materi}</dd>
 
-                                                <dd class="col-sm-3">Soal Latihan</dd>
-                                                <dd class="col-sm-9">: {item.keyword_soal}</dd>
+                                                <dd className="col-sm-4">Soal Latihan</dd>
+                                                <dd className="col-sm-8">: {item.keyword_soal}</dd>
 
-                                                <dd class="col-sm-3">Token</dd>
-                                                <dd class="col-sm-9">: {item.token}</dd>
+                                                <dd className="col-sm-4">Deadline Pengumpulan Latihan</dd>
+                                                <dd className="col-sm-8">: {item.deadline}</dd>
+
+
+                                                <dd className="col-sm-4">Token</dd>
+                                                <dd className="col-sm-8">: {item.token}</dd>
                                             </dl>
                                             <div className="btn-group" role="group" aria-label="Basic example">
                                                 <Link href= {""} >

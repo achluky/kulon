@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowAltCircleLeft, faThumbtack} from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleLeft, faLaptopCode} from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Link from 'next/link';
 import Image from 'next/image'
 import {
+    absoluteUrl,
     getAppCookies,
     verifyToken
 } from '../../../../utility/utils';
@@ -12,10 +13,10 @@ import profilePic from '../../../../public/me.jpeg';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 
-export default function Latihan({profil}){
+export default function Latihan({profil, kelas_material, origin}){
     const router = useRouter();
     
-    function Kerjakan() {
+    function Kerjakan(id_kelas_material) {
         Swal.fire({
             title: 'Masukan Token',
             input: 'text',
@@ -25,10 +26,10 @@ export default function Latihan({profil}){
             showCancelButton: true,
             confirmButtonText: 'Kerjakan',
             showLoaderOnConfirm: true,
-            preConfirm: async (login) => {
+            preConfirm: async (token) => {
                 try {
-                    const response = await fetch(`//api.github.com/users/${login}`);
-                    if (!response.ok) {
+                    const response = await fetch(`${origin}/api/kelas_material/token/${id_kelas_material}/${token}`);
+                    if (!response.status) {
                         throw new Error(response.statusText);
                     }
                     return await response.json();
@@ -40,8 +41,18 @@ export default function Latihan({profil}){
             },
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
-        if (result.isConfirmed) {
-                router.push("/mahasiswa/latihan");
+            if (result.isConfirmed) {
+                console.log(result);
+                if(result.value.status){
+                    Swal.fire('Valid', '', 'success');
+                    router.push("/mahasiswa/latihan");
+                }else{
+                    Swal.fire(
+                        'Tidak Valid',
+                        result.value.statusText,
+                        'info'
+                    )
+                }
             }
         })
     }
@@ -90,10 +101,13 @@ export default function Latihan({profil}){
                             </div>
                             <div className="pb-3"></div>
                             <ul className="list-group">
-                                <li className="list-group-item d-flex justify-content-between align-items-center">
-                                    Minggu Ke - 1
-                                    <button type="button" className="btn btn-primary btn-sm" onClick={() => Kerjakan()}><FontAwesomeIcon icon={ faThumbtack }/> Kerjakan </button>
-                                </li>
+
+                                {kelas_material.map((kls_materi, index) => (
+                                    <li className="list-group-item d-flex justify-content-between align-items-center" key={index}>
+                                        Minggu Ke - {kls_materi.minggu_ke} [batas waktu pengumpulan: tanggal {kls_materi.deadline}]
+                                        <button type="button" className="btn btn-primary btn-sm" onClick={() => Kerjakan(kls_materi.id_kelas_material)}><FontAwesomeIcon icon={ faLaptopCode }/> Kerjakan </button>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </div>
@@ -104,13 +118,20 @@ export default function Latihan({profil}){
 }
 
 export async function getServerSideProps(context) {
-    const { req } = context;
+    const { req, query } = context;
+    const { origin } = absoluteUrl(req);
     const { data } = getAppCookies(req);
     const profil = data ? verifyToken(data) : '';
-    console.log(profil);
+
+    const baseApiUrl = `${origin}/api/kelas_material/${query.pid}`;
+    const result = await fetch(baseApiUrl)
+    const kelas_material = await result.json();
+    
     return {
         props: {
-            profil
+            profil,
+            kelas_material,
+            origin
         }
     };
 }
