@@ -15,13 +15,14 @@ import { soalService } from '../../../../services';
 import { useState } from 'react';
 import moment from "moment";
 
-export default function Edit({soal, profil, prodis, semesters, modul}){
+export default function Edit({soal, profil, prodis, semesters, modul, kelas_material}){
     const [stateFormMessage, setStateFormMessage] = useState({});
     const { register, handleSubmit, formState } = useForm({
         defaultValues: {
             id_soal: soal.id_soal,
             nama_soal : soal.nama_soal,
             keyword: soal.keyword,
+            id_kelas_material: soal.id_kelas_material,
             semester : soal.semester+'_'+soal.nama_semester,
             prodi : soal.prodi+'_'+soal.nama_prodi,
             deskripsi_soal : soal.deskripsi_soal,
@@ -37,6 +38,7 @@ export default function Edit({soal, profil, prodis, semesters, modul}){
             "id_soal": data.id_soal,
             "nama_soal": data.nama_soal,
             "deskripsi_soal": data.deskripsi_soal,
+            "id_kelas_material": data.id_kelas_material,
             "keyword": data.keyword,
             "semester": data_smt[0],
             "nama_semester": data_smt[1],
@@ -102,12 +104,19 @@ export default function Edit({soal, profil, prodis, semesters, modul}){
                                         <label>Judul/Nama Soal</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <textarea className="form-control" placeholder="Deskripsi" style={{height: 100}} {...register("deskripsi_soal", {required: true})} rows={100} ></textarea>
+                                        <textarea className="form-control" placeholder="Deskripsi" style={{height: 300}} {...register("deskripsi_soal", {required: true})} rows={200} ></textarea>
                                         <label>Deskripsi</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <input type="text" className="form-control" placeholder="#keyword" {...register("keyword", {required: true})} />
-                                        <label>Keyword</label>
+                                        <select className="form-select" placeholder="Materi kelas" {...register("id_kelas_material", { required: true })} >
+                                            <option value="">Ke - </option>
+                                            {kelas_material.map((mingguke)=>{
+                                                return (
+                                                    <option value={mingguke.id_kelas_material} key={mingguke.id_kelas_material}>Kelas {mingguke.nama_kelas} Minggu Ke-{mingguke.minggu_ke} Semester {mingguke.nama_semester}</option>
+                                                )
+                                            })}
+                                        </select>
+                                        <label>Materi Kelas</label>
                                     </div>
                                     <div className="form-floating mb-3">
                                         <select className="form-select" {...register("nama_modul", { required: true })} >
@@ -190,6 +199,10 @@ export async function getServerSideProps(context) {
     const result_modul = await fetch(baseApiUrl_modul)
     const modul = await result_modul.json();
 
+    const baseApiUrl_kelas_material = `${origin}/api/kelas_material/nidn/${profil.nim_nidn}`;
+    const result_kelas_material = await fetch(baseApiUrl_kelas_material)
+    const kelas_material  = await result_kelas_material.json();
+
     return {
         props: {
             baseApiUrl,
@@ -197,7 +210,8 @@ export async function getServerSideProps(context) {
             soal: soal,
             prodis,
             semesters,
-            modul
+            modul,
+            kelas_material
         },
     };
 }

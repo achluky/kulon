@@ -16,7 +16,7 @@ import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
 
 
-export default function Tambah({profil, prodis, semesters, modul}){
+export default function Tambah({profil, prodis, semesters, modul, kelas_material}){
     const [stateFormMessage, setStateFormMessage] = useState({});
     const { register, handleSubmit, formState } = useForm();
     const { errors } = formState;
@@ -32,6 +32,7 @@ export default function Tambah({profil, prodis, semesters, modul}){
             "id_modul": data_modul[0],
             "nama_modul": data_modul[1],
             "keyword": data.keyword,
+            "id_kelas_material": data.id_kelas_material,
             "deskripsi_soal": data.deskripsi_soal,
             "semester": data_smt[0],
             "nama_semester": data_smt[1],
@@ -106,12 +107,19 @@ export default function Tambah({profil, prodis, semesters, modul}){
                                         <label>Nama Soal</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <textarea className="form-control" style={{height: 100}} placeholder="Deskripsi" {...register("deskripsi_soal", {required: true})}  ></textarea>
+                                        <textarea className="form-control" style={{height: 200}} placeholder="Deskripsi" {...register("deskripsi_soal", {required: true})}  ></textarea>
                                         <label>Deskripsi Soal</label>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <input type="text" className="form-control" placeholder="A.1" {...register("keyword", {required: true})} />
-                                        <label>#Keyword</label>
+                                        <select className="form-select" placeholder="Materi kelas" {...register("id_kelas_material", { required: true })} >
+                                            <option value="">Ke - </option>
+                                            {kelas_material.map((mingguke)=>{
+                                                return (
+                                                    <option value={mingguke.id_kelas_material} key={mingguke.id_kelas_material}>Kelas {mingguke.nama_kelas} Minggu Ke-{mingguke.minggu_ke} Semester {mingguke.nama_semester}</option>
+                                                )
+                                            })}
+                                        </select>
+                                        <label>Materi Kelas</label>
                                     </div>
                                     <div className="form-floating mb-3">
                                         <select className="form-select" {...register("nama_modul", { required: true })} >
@@ -263,12 +271,17 @@ export async function getServerSideProps(context) {
     const result_modul = await fetch(baseApiUrl_modul)
     const modul = await result_modul.json();
 
+    const baseApiUrl_kelas_material = `${origin}/api/kelas_material/nidn/${profil.nim_nidn}`;
+    const result_kelas_material = await fetch(baseApiUrl_kelas_material)
+    const kelas_material  = await result_kelas_material.json();
+
     return {
         props: {
             profil,
             prodis,
             semesters,
-            modul
+            modul,
+            kelas_material
         },
     };
 

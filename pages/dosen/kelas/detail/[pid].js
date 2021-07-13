@@ -227,35 +227,8 @@ export default function Detail({kelas, profil, kelas_material}){
                                             <label>Keyword Soal Latihan</label>
                                         </div>
                                         <div className="form-floating mb-3">
-                                            {/* <DatePicker
-                                                selected={startDate}
-                                                onChange={(date) => setStartDate(date)}
-                                                showTimeSelect
-                                                dateFormat="MMMM d, yyyy"
-                                                timeFormat="p"
-                                                timeIntervals={15}
-                                                dateFormat="Pp"
-                                                name="deadline"
-                                                className="form-control"
-                                            /> */}
                                             <input type="datetime-local" className="form-control" placeholder="deadline" {...register("deadline", {required: true})} />
                                             <label>Deadling Pengumpulan Latihan</label> {' '}
-                                            {/* <Controller
-                                                control={control}
-                                                name='deadline'
-                                                render={({ field }) => (
-                                                <DatePicker
-                                                    selected={startDate}
-                                                    placeholderText='Pilih Tanggal'
-                                                    onChange={(date) => setStartDate(date)}
-                                                    dateFormat="MM/dd/yyyy h:mm aa"
-                                                    showTimeSelect
-                                                    timeFormat="p"
-                                                    timeIntervals={15}
-                                                    dateFormat="Pp"
-                                                />
-                                            )}
-                                            /> */}
                                         </div>
                                     </Modal.Body>
                                     <Modal.Footer>
