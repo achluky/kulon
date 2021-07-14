@@ -44,7 +44,7 @@ export default async (req, res) => {
                 res.status(200).json(
                     {
                         error : false,
-                        message : "Data berhasil disimpan",
+                        message : "Data Soal "+data.nama_soal+" berhasil disimpan",
                         data: data
                     }
                 );

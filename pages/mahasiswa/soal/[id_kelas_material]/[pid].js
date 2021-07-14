@@ -14,14 +14,10 @@ import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
 import { soalService } from '../../../../services';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
 
 export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_material}){
-    console.log(solusi_latihan.code);
-    const { register, handleSubmit, formState } = useForm({
-        defaultValues: {
-            code: solusi_latihan.code
-        }
-    });
+    const { register, handleSubmit, formState, setValue } = useForm();
     const { errors } = formState;
 
     const router = useRouter();
@@ -58,7 +54,6 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
             "updateAt": moment().format("DD-MM-YYYY hh:mm:ss")
         }
         const result = await soalService.saveSolusi(data_solusi);
-        setStateFormMessage(result);
         if (result.error === false) {
             refreshData();
         }
@@ -78,7 +73,7 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
     // coundown 
     const [secs, setSecs] = useState(0);
     const [mins, setMins] = useState(kelas_material.waktu_mengerjakan)
-    const [solusi, setSolusi] = useState(solusi_latihan.exist)
+    const [solusi, setSolusi] = useState(0)
 
     useEffect(() => {
         const timerId = setInterval(() => {
@@ -121,7 +116,6 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                                         <li className="list-group-item d-flex justify-content-between align-items-start"  key={index}>
                                             <div className="ms-2 me-auto">
                                             <div className="fw-bold">Soal : {soal.nama_soal}</div>
-                                            {/* Modul: {soal.nama_modul} */}
                                             </div>
                                             <div className="float-end">
                                                 <Link href={"/mahasiswa/soal/"+ soal.id_kelas_material +"/"+ soal.id_soal }>
@@ -147,11 +141,11 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                                 </div>
                                 <div className="col-sm-7">
                                     <form onSubmit={handleSubmit(onSubmit)}>
-                                        {solusi === 1 ? (
+                                        {solusi_latihan.exist === 1 ? (
                                             <>
                                                 <p className="card-text highlight">
-                                                    <FontAwesomeIcon icon={ faGift }/> Selamat Anda telah mengerjakan soal ini
-                                                    <FontAwesomeIcon icon={ faCandyCane }/>    
+                                                    <FontAwesomeIcon icon={ faGift }/> Selamat Anda telah mengerjakan soal <b>{soal.nama_soal}</b>
+                                                    {' '}<FontAwesomeIcon icon={ faCandyCane }/>    
                                                 </p>
                                             </>
                                         ):(
@@ -176,11 +170,13 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                                                         <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
                                                     </div>
                                                 )}
-                                                <textarea className="form-control" style={{height: 300}} placeholder="Silahkan Ketikan Kode Anda" {...register("code", {required: true})} ></textarea>
+                                                <textarea className="form-control" style={{height: 300}} placeholder="Silahkan Ketikan Kode Anda" {...register("code", {required: true})} >
+                                                    {solusi_latihan.code}
+                                                </textarea>
                                                 <div className="btn-group mt-3">
                                                     <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary mr-2">
                                                         {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span> }
-                                                        {' '} <FontAwesomeIcon icon={ faSave }/> Simpan Code
+                                                        {' '} <FontAwesomeIcon icon={ faSave }/> Simpan Code & Akhiri Pengerjaan Soal
                                                     </button>
                                                     <button className="btn btn-primary active" onClick={handleSubmit(run)}  >
                                                         <FontAwesomeIcon icon={ faPlayCircle }/> Run & Compile
@@ -189,8 +185,6 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                                             </>
                                         )}
                                     </form>
-                                    
-
                                     {!datarun ? (
                                         <p></p>
                                     ) : (    
@@ -206,7 +200,6 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                                             )}  
                                         </div>                            
                                     )}
-
                                 </div>
                             </div>
                         </div>
