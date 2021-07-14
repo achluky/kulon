@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowAltCircleLeft, faLaptopCode} from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleLeft, faWindowRestore } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Link from 'next/link';
 import Image from 'next/image'
@@ -42,10 +42,12 @@ export default function Latihan({profil, kelas_material, origin}){
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log(result);
                 if(result.value.status){
-                    Swal.fire('Valid', '', 'success');
-                    router.push("/mahasiswa/latihan");
+                    Swal.fire(
+                            'Valid', 
+                            'Token yang anda masukan benar', 
+                            'success');
+                    router.push(`/mahasiswa/soal/${id_kelas_material}/${result.value.id_soal}`);
                 }else{
                     Swal.fire(
                         'Tidak Valid',
@@ -105,7 +107,11 @@ export default function Latihan({profil, kelas_material, origin}){
                                 {kelas_material.map((kls_materi, index) => (
                                     <li className="list-group-item d-flex justify-content-between align-items-center" key={index}>
                                         Minggu Ke - {kls_materi.minggu_ke} [batas waktu pengumpulan: tanggal {kls_materi.deadline}]
-                                        <button type="button" className="btn btn-primary btn-sm" onClick={() => Kerjakan(kls_materi.id_kelas_material)}><FontAwesomeIcon icon={ faLaptopCode }/> Kerjakan </button>
+                                        {kls_materi.status_pengerjaan == '' ? (
+                                            <button type="button" className="btn btn-primary btn-sm" onClick={() => Kerjakan(kls_materi.id_kelas_material)}><FontAwesomeIcon icon={ faWindowRestore }/> Kerjakan </button>
+                                        ):(
+                                            <button type="button" className="btn btn-primary btn-sm" onClick={() => Kerjakan(kls_materi.id_kelas_material)}> Lajutkan <FontAwesomeIcon icon={ faWindowRestore }/> </button>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
@@ -123,7 +129,7 @@ export async function getServerSideProps(context) {
     const { data } = getAppCookies(req);
     const profil = data ? verifyToken(data) : '';
 
-    const baseApiUrl = `${origin}/api/kelas_material/${query.pid}`;
+    const baseApiUrl = `${origin}/api/kelas_material/id_kelas/${query.pid}`;
     const result = await fetch(baseApiUrl)
     const kelas_material = await result.json();
     

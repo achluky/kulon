@@ -41,7 +41,6 @@ export default function Detail({kelas, profil, kelas_material}){
     }
 
     async function onSubmit(data) {
-        console.log(data);
         const id_kelas_material = uuidv4();
         const kelas_material = {
             "id_kelas_material": id_kelas_material,
@@ -50,6 +49,7 @@ export default function Detail({kelas, profil, kelas_material}){
             "keyword_soal": data.soal,
             "materi":data.materi,
             "deadline": data.deadline,
+            "status_pengerjaan":"",
             "token": kelasMaterialService.token(5),
             "id_kelas": kelas.id_kelas,
             "nama_kelas":kelas.nama_kelas,
@@ -315,7 +315,7 @@ export async function getServerSideProps(context) {
     const kelas = await result.json();
 
 
-    const baseApiUrl_material = `${origin}/api/kelas_material/${query.pid}`;
+    const baseApiUrl_material = `${origin}/api/kelas_material/id_kelas/${query.pid}`;
     const result_material = await fetch(baseApiUrl_material)
     const kelas_material = await result_material.json();
 
