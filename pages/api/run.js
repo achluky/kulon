@@ -1,10 +1,11 @@
 
 import { connectToDatabase } from "../../utility/mongodb";
+import {PythonShell} from 'python-shell';
+
 export default async (req, res) => {
     const { db } = await connectToDatabase();
     if (req.method === 'POST') 
     {
-        console.log(req.body);
         if(!req.body.code){
             res.json(
                 {
@@ -14,7 +15,17 @@ export default async (req, res) => {
             )
         }else{
             const data = req.body;
-            await sleep(1000);
+            let options = {
+                mode: 'text',
+                pythonPath: '/usr/bin/python',
+                pythonOptions: ['-u'],
+                args: ['Bruce Wayne', 'ahmad luky']
+            };
+
+            PythonShell.runString(data.code, options, function (err, results) {
+                if (err) throw err;
+                console.log(results);
+            });
             res.json(
                 {
                     "status": "Done..."
@@ -31,9 +42,3 @@ export default async (req, res) => {
         )
     }
 };
-
-function sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-}

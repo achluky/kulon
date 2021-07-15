@@ -27,6 +27,7 @@
     "next": "11.0.1",
     "nextjs-progressbar": "^0.0.11",
     "prop-types": "^15.7.2",
+    "python-shell": "^3.0.0",
     "react": "17.0.2",
     "react-accessible-accordion": "^3.3.4",
     "react-bootstrap": "^1.6.1",
