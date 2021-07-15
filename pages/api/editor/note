@@ -1,0 +1,3 @@
+api
+    /api/editor/template/:lang (get template file)
+    /api/editor/simpan/:lang/:file_name.extention (simpan code dalam file)

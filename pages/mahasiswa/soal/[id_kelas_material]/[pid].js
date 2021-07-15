@@ -191,7 +191,7 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                                     showPrintMargin
                                                     showGutter
                                                     highlightActiveLine
-                                                    value={this.props.code}
+                                                    value=""
                                                     editorProps={{
                                                         $blockScrolling: true,
                                                         enableBasicAutocompletion: true,

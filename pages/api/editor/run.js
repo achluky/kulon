@@ -1,5 +1,5 @@
 
-import { connectToDatabase } from "../../utility/mongodb";
+import { connectToDatabase } from "../../../utility/mongodb";
 import {PythonShell} from 'python-shell';
 
 export default async (req, res) => {
