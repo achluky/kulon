@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlayCircle, faSave, faWindowRestore, faTimesCircle, faCheckCircle, faGift, faCandyCane} from '@fortawesome/free-solid-svg-icons'
+import { faPlayCircle, faSave, faWindowRestore, faTimesCircle, faCheckCircle, faGift, faCandyCane, faListAlt} from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Link from 'next/link';
 import {
@@ -8,23 +8,26 @@ import {
     verifyToken
 } from '../../../../utility/utils';
 import Login from '../../../../components/login';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
 import { soalService } from '../../../../services';
 import { useRouter } from 'next/router';
-import Swal from 'sweetalert2';
+import CodeEditor from '../../../../components/module_with_editor';
 
-export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_material}){
-    const { register, handleSubmit, formState, setValue } = useForm();
+export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
+    const { handleSubmit, formState } = useForm();
     const { errors } = formState;
-
     const router = useRouter();
     const refreshData = () => {
         router.replace(router.asPath);
     }
 
+    function onChange(newValue) {
+        console.log("change", newValue);
+    }
+      
     // simpan & data
     const [stateFormMessage, setStateFormMessage] = useState(0);
     async function onSubmit(data) {
@@ -72,7 +75,7 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
 
     // coundown 
     const [secs, setSecs] = useState(0);
-    const [mins, setMins] = useState(kelas_material.waktu_mengerjakan)
+    const [mins, setMins] = useState(100)
     const [solusi, setSolusi] = useState(0)
 
     useEffect(() => {
@@ -100,46 +103,58 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="col-sm-12">
-                            <nav className="navbar navbar-light bg-light">
+
+                            <Link href={"/mahasiswa/soal/mingguan/"+ id_kelas_material}>
+                            <button type="button" className="btn btn-primary mb-4">
+                                <FontAwesomeIcon icon={ faListAlt }/> Daftar Soal
+                            </button>
+                            </Link>
+
+                            <nav className="navbar navbar-light bg-light mb-4">
                                 <div className="container-fluid">
-                                    <span className="navbar-brand mb-0 h1">Latihan Minggu Ke -1</span>
+                                    <span className="navbar-brand mb-0 h1">Latihan Minggu Ke -1 [ <small>{soal.nama_soal} ] </small></span>
                                     <div className="float-end">
                                         Sisa Waktu Pengerjaan :  <b>{mins} Menit :{secs < 10 && 0}{secs} Detik</b>
                                     </div>
                                 </div>
                             </nav>
-                            <div className="pb-3"></div>
                             <div className="row">
-                                <div className="col-sm-5">
-                                    <ul className="list-group mt-4">
-                                    {soal_all.map((soal, index) => (
-                                        <li className="list-group-item d-flex justify-content-between align-items-start"  key={index}>
-                                            <div className="ms-2 me-auto">
-                                            <div className="fw-bold">Soal : {soal.nama_soal}</div>
-                                            </div>
-                                            <div className="float-end">
-                                                <Link href={"/mahasiswa/soal/"+ soal.id_kelas_material +"/"+ soal.id_soal }>
-                                                    <button type="button" className="btn btn-primary btn-sm">
-                                                        <FontAwesomeIcon icon={ faWindowRestore }/> Kerjakan 
-                                                    </button>
-                                                </Link>
-                                            </div>
+                                <div className="col-sm-12">
+                                    <ul className="nav nav-tabs">
+                                        <li className="nav-item">
+                                            <a className="nav-link active" href="#">Deskripsi</a>
                                         </li>
-                                    ))}
+                                        <li className="nav-item">
+                                            <a className="nav-link disabled" href="#" >Nilai</a>
+                                        </li>
                                     </ul>
                                     <div className="card mt-4">
                                         <div className="card-body p-4">
-                                            <div className="fw-bold">
-                                                Detail Soal : {soal.nama_soal}
-                                            </div>
-                                            <p>Modul : {soal.nama_modul}</p>
+
+                                            <p className="">
+                                                Modul : {soal.nama_modul}  <br/>
+                                                Bahasa Pemrograman : {soal.bahasa_pemrograman} <br/>
+                                                Running Time : {soal.runnig_time}
+                                            </p>
                                             <p>
                                                 {soal.deskripsi_soal}
                                             </p>
+
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-sm-7">
+
+                                <div className="col-sm-3 mt-4">
+                                    <select className="form-select" aria-label="Default select example">
+                                        <option value="">Pilih Bahasa Pemrograman</option>
+                                        <option value="python">Python</option>
+                                        <option value="cpp">C++</option>
+                                        <option value="c">C</option>
+                                        <option value="java">Java</option>
+                                    </select>
+                                </div>
+
+                                <div className="col-sm-12 mt-4">
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         {solusi_latihan.exist === 1 ? (
                                             <>
@@ -150,11 +165,6 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                                             </>
                                         ):(
                                             <>
-                                                <p className="card-text highlight">
-                                                    Bahasa Pemrograman : {soal.bahasa_pemrograman} <br/>
-                                                    Running Time : {soal.runnig_time} <br />
-                                                    Soal : {soal.nama_soal}
-                                                </p>
                                                 {errors.code && errors.code.type === "required" && <>
                                                     <div className="alert alert-danger" role="alert">
                                                         <FontAwesomeIcon icon={ faTimesCircle }/> Code Program Wajib Anda Isi <br /> 
@@ -170,9 +180,29 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                                                         <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
                                                     </div>
                                                 )}
-                                                <textarea className="form-control" style={{height: 300}} placeholder="Silahkan Ketikan Kode Anda" {...register("code", {required: true})} >
-                                                    {solusi_latihan.code}
-                                                </textarea>
+                                                <CodeEditor
+                                                    name="code"
+                                                    onChange={onChange}
+                                                    mode="javascript"
+                                                    theme="monokai"
+                                                    showPrintMargin={false}
+                                                    width="100%"
+                                                    style={{ height: '400px' }}
+                                                    showPrintMargin
+                                                    showGutter
+                                                    highlightActiveLine
+                                                    value={this.props.code}
+                                                    editorProps={{
+                                                        $blockScrolling: true,
+                                                        enableBasicAutocompletion: true,
+                                                        enableLiveAutocompletion: true,
+                                                        enableSnippets: true,
+                                                    }}
+                                                    setOptions={{
+                                                        showLineNumbers: true,
+                                                        tabSize: 2,
+                                                    }}
+                                                />
                                                 <div className="btn-group mt-3">
                                                     <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary mr-2">
                                                         {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span> }
@@ -191,11 +221,11 @@ export default function Soal({profil, soal, soal_all, solusi_latihan, kelas_mate
                                         <div className="alert alert-primary mt-3 data_run" role="alert">
                                             {datarun == 'Progress' ?(
                                                 <>
-                                                <span className="spinner-border spinner-border-sm mr-2"></span> {datarun}
+                                                    <span className="spinner-border spinner-border-sm mr-2"></span> {datarun}
                                                 </>
                                             ):(
                                                 <>
-                                                {datarun}
+                                                    {datarun}
                                                 </>
                                             )}  
                                         </div>                            
@@ -226,21 +256,12 @@ export async function getServerSideProps(context) {
     const result_solusi = await fetch(baseApiUrl_solusi)
     const solusi_latihan = await result_solusi.json();
 
-    const baseApiUrl_soal_all = `${origin}/api/soal/kelas_material/${query.id_kelas_material}`;
-    const result_soal_all = await fetch(baseApiUrl_soal_all)
-    const soal_all = await result_soal_all.json();
-
-    const baseApiUrl_kelas_material = `${origin}/api/kelas_material/${query.id_kelas_material}`;
-    const result_kelas_material = await fetch(baseApiUrl_kelas_material)
-    const kelas_material = await result_kelas_material.json();
-
     return {
         props: {
             profil,
             soal,
-            soal_all,
             solusi_latihan,
-            kelas_material
+            id_kelas_material : query.id_kelas_material
         }
     };
 }

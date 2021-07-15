@@ -70,7 +70,6 @@ export default function Soal({soal, profil}) {
                 <td scope="row">{++index}</td>
                 <td>{sol.nama_soal}</td>
                 <td>{sol.nama_modul}</td>
-                <td>{keyword_split(sol.keyword)}</td>
                 <td width={100}>
                     <div className="btn-group" role="group">
                         <Link href= {"/dosen/soal/edit/"+sol.id_soal+""} >
@@ -135,7 +134,6 @@ export default function Soal({soal, profil}) {
                                             <th scope="col">No.</th>
                                             <th scope="col">Judul Soal</th>
                                             <th scope="col">Modul</th>
-                                            <th scope="col">Keyword</th>
                                             <th scope="col">Aksi</th>
                                             </tr>
                                         </thead>
