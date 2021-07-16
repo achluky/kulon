@@ -66,7 +66,6 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
             "createAt": moment().format("DD-MM-YYYY hh:mm:ss"),
             "updateAt": moment().format("DD-MM-YYYY hh:mm:ss")
         }
-        console.log(data_solusi);
         const result = await soalService.saveSolusi(data_solusi);
         if (result.error === false) {
             refreshData();
@@ -74,14 +73,30 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
     }
 
     // Run & compile
-    const [datarun, setDatarun] = useState(0);
-    function run(data) {
-        setDatarun('Progress');
-        runApi(data);
+    const [datarun, setDatarun] = useState();
+    function run() {
+        if (selectedLang==='') {
+            setStateFormMessage({ error: true, message:'Bahasa pemrograman harus dipilih'});
+        }else{
+            setDatarun('Progress');
+            const data = {
+                code: code,
+                lang: selectedLang,
+                nim_id_soal: profil.nim_nidn+'_'+soal.id_soal
+            }
+            runApi(data);
+        }
     }
-    async function runApi(data) { //async
-        const result = await soalService.getRun(data);
-        setDatarun(result.status);
+    async function runApi(data) {
+        const result = await editorService.runCompiler(data);
+        console.log(result);
+        if(result.status != 0){
+            const error_line = result.message.split(',');
+            console.log(error_line);
+            setDatarun(error_line[1] + error_line[2]);
+        }else{
+            setDatarun(result.message);
+        }
     }
 
     // coundown 
@@ -190,7 +205,6 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                                         <option value="python">Python</option>
                                                         <option value="cpp">C++</option>
                                                         <option value="c">C</option>
-                                                        <option value="java">Java</option>
                                                     </select>
                                                 </div>
                                                 {/* <textarea className="form-select" value={code} onChange={onChangeEditor} /> */}

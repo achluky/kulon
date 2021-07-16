@@ -3,7 +3,6 @@ import { apiUrl } from '../config';
 import { fetchWrapper } from './fetch-wrapper';
 
 export const soalService = {
-    getRun,
     saveSolusi,
     saveSoal, 
     getSoal,
@@ -42,8 +41,4 @@ function kodeSoal(length) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
-}
-
-function getRun(code){
-    return fetchWrapper.post( `${apiUrl}/run`, code);
 }
