@@ -1,3 +1,9 @@
 api
-    /api/editor/template/:lang (get template file)
-    /api/editor/simpan/:lang/:file_name.extention (simpan code dalam file)
+    GET /api/editor/template/:lang (get template file)
+    GET /api/editor/simpan/:lang/:file_name.extention (simpan code dalam file)
+    POST /api/editor/runManager 
+    {
+        'lang':'python'
+        'code':'print("hello")'
+        'nim_id_soal':'123_e34qskgf'
+    }

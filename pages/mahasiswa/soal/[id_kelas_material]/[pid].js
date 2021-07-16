@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
 import { soalService } from '../../../../services';
+import { editorService } from '../../../../services';
 import { useRouter } from 'next/router';
 import CodeEditor from '../../../../components/module_with_editor';
 
@@ -23,18 +24,27 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
     const refreshData = () => {
         router.replace(router.asPath);
     }
-
-    function onChange(newValue) {
-        console.log("change", newValue);
+    
+    const [stateFormMessage, setStateFormMessage] = useState([{ error: false, message:''}])
+    const [selectedLang, setselectedLang] = useState('')
+    const [code, setcode] = useState()
+    function langChange(event) {
+        editorService.getTemplate(event.target.value)
+            .then((response) => setcode(response.code) )
+            .catch((error) => {
+                setStateFormMessage({error: true, message:error});
+            });
+        setselectedLang(event.target.value);
+    }
+    function onChangeEditor(newValue) {
+        setcode(newValue);
     }
       
-    // simpan & data
-    const [stateFormMessage, setStateFormMessage] = useState(0);
     async function onSubmit(data) {
         const id_code = uuidv4();
         const data_solusi = {
             "id_code": id_code,
-            "code": data.code,
+            "code": code,
             "status_code": 1, // selesai dikerjakan
             "nilai": "",
             "status_nilai": "", // selesai dinilai
@@ -56,6 +66,7 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
             "createAt": moment().format("DD-MM-YYYY hh:mm:ss"),
             "updateAt": moment().format("DD-MM-YYYY hh:mm:ss")
         }
+        console.log(data_solusi);
         const result = await soalService.saveSolusi(data_solusi);
         if (result.error === false) {
             refreshData();
@@ -94,6 +105,7 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
         return () => clearInterval(timerId);
     }, [secs, mins])
 
+
     return(
         <div>
             {!profil ? (
@@ -103,13 +115,11 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="col-sm-12">
-
                             <Link href={"/mahasiswa/soal/mingguan/"+ id_kelas_material}>
                             <button type="button" className="btn btn-primary mb-4">
                                 <FontAwesomeIcon icon={ faListAlt }/> Daftar Soal
                             </button>
                             </Link>
-
                             <nav className="navbar navbar-light bg-light mb-4">
                                 <div className="container-fluid">
                                     <span className="navbar-brand mb-0 h1">Latihan Minggu Ke -1 [ <small>{soal.nama_soal} ] </small></span>
@@ -143,17 +153,6 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="col-sm-3 mt-4">
-                                    <select className="form-select" aria-label="Default select example">
-                                        <option value="">Pilih Bahasa Pemrograman</option>
-                                        <option value="python">Python</option>
-                                        <option value="cpp">C++</option>
-                                        <option value="c">C</option>
-                                        <option value="java">Java</option>
-                                    </select>
-                                </div>
-
                                 <div className="col-sm-12 mt-4">
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         {solusi_latihan.exist === 1 ? (
@@ -165,12 +164,17 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                             </>
                                         ):(
                                             <>
+                                                {errors.lang && errors.lang.type === "required" && <>
+                                                    <div className="alert alert-danger" role="alert">
+                                                        <FontAwesomeIcon icon={ faTimesCircle }/> Bahasa Pemrograman Wajib Anda Isi <br /> 
+                                                    </div>
+                                                </>}
                                                 {errors.code && errors.code.type === "required" && <>
                                                     <div className="alert alert-danger" role="alert">
                                                         <FontAwesomeIcon icon={ faTimesCircle }/> Code Program Wajib Anda Isi <br /> 
                                                     </div>
                                                 </>}
-                                                {stateFormMessage.error && (            
+                                                {stateFormMessage.error===true && (            
                                                     <div className="alert alert-danger" role="alert">
                                                         <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
                                                     </div>
@@ -180,9 +184,19 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                                         <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
                                                     </div>
                                                 )}
+                                                <div className="col-sm-3 mb-4">
+                                                    <select className="form-select" value={selectedLang} onChange={langChange} >
+                                                        <option value="">Pilih Bahasa Pemrograman</option>
+                                                        <option value="python">Python</option>
+                                                        <option value="cpp">C++</option>
+                                                        <option value="c">C</option>
+                                                        <option value="java">Java</option>
+                                                    </select>
+                                                </div>
+                                                {/* <textarea className="form-select" value={code} onChange={onChangeEditor} /> */}
                                                 <CodeEditor
                                                     name="code"
-                                                    onChange={onChange}
+                                                    onChange={onChangeEditor}
                                                     mode="javascript"
                                                     theme="monokai"
                                                     showPrintMargin={false}
@@ -191,7 +205,7 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                                     showPrintMargin
                                                     showGutter
                                                     highlightActiveLine
-                                                    value=""
+                                                    value={code}
                                                     editorProps={{
                                                         $blockScrolling: true,
                                                         enableBasicAutocompletion: true,

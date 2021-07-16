@@ -8,8 +8,7 @@ export const config = {
     },
 }
 
-export default async function (req, res)
-{   
+export default async (req, res) => {
     try {
         const { pid } = req.query // lang
         let file = '';
@@ -18,7 +17,7 @@ export default async function (req, res)
             file = path.join(__dirname, '../../../../../../templates', 'Hello.java');
         } else if (language === 'c') {
             file = path.join(__dirname, '../../../../../../templates', 'Hello.c');
-        } else if (language === 'c++') {
+        } else if (language === 'cpp') {
             file = path.join(__dirname, '../../../../../../templates', 'Hello.cpp');
         } else if (language === 'javascript') {
             file = path.join(__dirname, '../../../../../../templates', 'Hello.js');
@@ -31,12 +30,11 @@ export default async function (req, res)
         fs.readFile(file, (err, data) => {
             if (err) {
                 throw err;
+            }else{
+                console.log(data.toString());
+                res.status(200).json({lang: language, code: data.toString()});
+                return;
             }
-            const file = {
-                lang: language,
-                code: data.toString(),
-            };
-            res.send(JSON.stringify(file));
         });
     } catch (error) {
         res.status(500).send(error)

@@ -1,6 +1,11 @@
-
+import { run } from "../compiler/RunnerManager";
 import { connectToDatabase } from "../../../utility/mongodb";
-import {PythonShell} from 'python-shell';
+
+export const config = {
+    api: {
+        externalResolver: true,
+    },
+}
 
 export default async (req, res) => {
     const { db } = await connectToDatabase();
@@ -13,24 +18,23 @@ export default async (req, res) => {
                     "message": "Code program kosong"
                 }
             )
-        }else{
-            const data = req.body;
-            let options = {
-                mode: 'text',
-                pythonPath: '/usr/bin/python',
-                pythonOptions: ['-u'],
-                args: ['Bruce Wayne', 'ahmad luky']
-            };
-
-            PythonShell.runString(data.code, options, function (err, results) {
-                if (err) throw err;
-                console.log(results);
-            });
+        }else if(!req.body.lang){
             res.json(
                 {
-                    "status": "Done..."
+                    "error": true,
+                    "message": "Pilih bahasa pemrograman"
                 }
             )
+        }else if(!req.body.nim_id_soal){
+            res.json(
+                {
+                    "error": true,
+                    "message": "Nim dan soal kosong"
+                }
+            )
+        }else{
+            const file = req.body; // lang & code & nim_id_soal
+            run(file.lang, file.code, file.nim_id_soal, res);
         }
     } else {
         res.statusCode = 401;
