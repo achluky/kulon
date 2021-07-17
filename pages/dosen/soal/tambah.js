@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faArrowAltCircleLeft, faTimesCircle, faCheckCircle, faFire } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faArrowAltCircleLeft, faTimesCircle, faCheckCircle, faFire, faPlus, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../../components/dosen_sidebar';
 import Link from 'next/link';
@@ -20,33 +20,40 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
     const [stateFormMessage, setStateFormMessage] = useState({});
     const { register, handleSubmit, formState } = useForm();
     const { errors } = formState;
-    
+    const [size, setSize] = useState(1);
+
+    function createArrayWithNumbers(length) {
+        return Array.from({ length }, (_, k) => k + 1);
+    }
+
     async function onSubmit(data) {
-        const id_soal = uuidv4();
-        const data_smt  = data.semester.split("_");
-        const data_prodi  = data.prodi.split("_");
-        const data_modul  = data.nama_modul.split("_");
-        const soal = {
-            "id_soal": id_soal,
-            "nama_soal": data.nama_soal,
-            "id_modul": data_modul[0],
-            "nama_modul": data_modul[1],
-            "keyword": data.keyword,
-            "id_kelas_material": data.id_kelas_material,
-            "deskripsi_soal": data.deskripsi_soal,
-            "semester": data_smt[0],
-            "nama_semester": data_smt[1],
-            "prodi": data_prodi[0],
-            "nama_prodi": data_prodi[1],
-            "nim_nidn": profil.nim_nidn,
-            "_id_user": profil._id,
-            "createAt": moment().format("DD-MM-YYYY hh:mm:ss"),
-            "updateAt": moment().format("DD-MM-YYYY hh:mm:ss"),
-            "nama_dosen": profil.name,
-            "delete": "0"
-        }
-        const result = await soalService.saveSoal(soal);
-        setStateFormMessage(result);
+        console.log(data);
+
+        // const id_soal = uuidv4();
+        // const data_smt  = data.semester.split("_");
+        // const data_prodi  = data.prodi.split("_");
+        // const data_modul  = data.nama_modul.split("_");
+        // const soal = {
+        //     "id_soal": id_soal,
+        //     "nama_soal": data.nama_soal,
+        //     "id_modul": data_modul[0],
+        //     "nama_modul": data_modul[1],
+        //     "keyword": data.keyword,
+        //     "id_kelas_material": data.id_kelas_material,
+        //     "deskripsi_soal": data.deskripsi_soal,
+        //     "semester": data_smt[0],
+        //     "nama_semester": data_smt[1],
+        //     "prodi": data_prodi[0],
+        //     "nama_prodi": data_prodi[1],
+        //     "nim_nidn": profil.nim_nidn,
+        //     "_id_user": profil._id,
+        //     "createAt": moment().format("DD-MM-YYYY hh:mm:ss"),
+        //     "updateAt": moment().format("DD-MM-YYYY hh:mm:ss"),
+        //     "nama_dosen": profil.name,
+        //     "delete": "0"
+        // }
+        // const result = await soalService.saveSoal(soal);
+        // setStateFormMessage(result);
     }
   
     return(
@@ -97,11 +104,8 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                                         </div>
                                     )}
                                 </div>
-
                                 <span className="navbar-brand mb-0 ms-3 lead "><FontAwesomeIcon icon={ faFire }/> Informasi Soal</span>
-                                
                                 <div className="card-body">
-                                   
                                     <div className="form-floating mb-3">
                                         <input type="text" className="form-control" placeholder="A.1" {...register("nama_soal", {required: true})} />
                                         <label>Nama Soal</label>
@@ -155,83 +159,44 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                                             <label >Program Studi</label>
                                         </div>
                                 </div>
-                                
                                 <span className="navbar-brand mb-0 ms-3 lead "><FontAwesomeIcon icon={ faFire }/> Mentukan Use Case (Masukan & Keluaran)</span>
                                 
                                 <div className="card-body">
-                                    <div class="row g-3">
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan1", {required: true})} />
-                                                <label>Masukan 1</label>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran1", {required: true})} />
-                                                <label>Keluaran  1</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan2", {required: true})} />
-                                                <label>Masukan 2</label>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran2", {required: true})} />
-                                                <label>Keluaran  2</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan3", {required: true})} />
-                                                <label>Masukan 3</label>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran3", {required: true})} />
-                                                <label>Keluaran  3</label>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="row g-3">
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan4", {required: true})} />
-                                                <label>Masukan 4</label>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran4", {required: true})} />
-                                                <label>Keluaran  4</label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <p className="w-100 btn btn-info mb-4" onClick={() => setSize(size + 1)}>
+                                        <FontAwesomeIcon icon={ faPlusCircle }/> Tambah Jumlah Test Case
+                                    </p>
+                                    
 
-                                    <div class="row g-3">
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("masukan5", {required: true})} />
-                                                <label>Masukan 5</label>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div className="form-floating mb-3 md-1">
-                                                <input type="text" className="form-control" placeholder="A.1" {...register("keluaran5", {required: true})} />
-                                                <label>Keluaran  5</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    {createArrayWithNumbers(size).map(index => {
+                                        const fieldName = `masukan_keluaran[${index}]`
+                                        return (
+                                            <>
+                                                <div className="row g-3" name={fieldName} key={fieldName} >
+                                                    <div className="col">
+                                                        <div className="form-floating mb-3 md-1">
+                                                            <textarea style={{height: 100}} 
+                                                            type="text" 
+                                                            className="form-control" 
+                                                            {...register(`masukan.${index}.nilai`, { required: true })}
+                                                            ></textarea>
+                                                            <label>Masukan {index}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col">
+                                                        <div className="form-floating mb-3 md-1">
+                                                            <textarea style={{height: 100}} 
+                                                            type="text" 
+                                                            className="form-control" 
+                                                            {...register(`keluaran.${index}.nilai`, { required: true })}
+                                                            ></textarea>
+                                                            <label>Keluaran  {index}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )
+                                    })}
                                 </div>
 
                                 <div className="card-body">
@@ -271,6 +236,7 @@ export async function getServerSideProps(context) {
     const result_modul = await fetch(baseApiUrl_modul)
     const modul = await result_modul.json();
 
+    // change userEffect
     const baseApiUrl_kelas_material = `${origin}/api/kelas_material/nidn/${profil.nim_nidn}`;
     const result_kelas_material = await fetch(baseApiUrl_kelas_material)
     const kelas_material  = await result_kelas_material.json();

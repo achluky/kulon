@@ -65,16 +65,10 @@ export default function Peserta({kelas}){
                                         </thead>
                                         <tbody>
                                             <tr>
-                                            <td scope="row">1</td>
-                                            <td>Mark</td>
-                                            <td>A123098</td>
-                                            <td>100</td>
-                                            </tr>
-                                            <tr>
-                                            <td scope="row">2</td>
-                                            <td>Jacob</td>
-                                            <td>A123088</td>
-                                            <td>80</td>
+                                                <td scope="row">1</td>
+                                                <td>Mark</td>
+                                                <td>A123098</td>
+                                                <td>100</td>
                                             </tr>
                                         </tbody>
                                     </table>

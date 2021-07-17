@@ -29,7 +29,7 @@ export default function Tambah({profil, prodis, semesters}){
             "id_modul": id_modul,
             "nama_modul": data.nama_modul,
             "deskripsi_modul": data.deskripsi_modul,
-            "nama_file": data.nama_file[0].name,
+            "nama_file": data.nama_file,
             "semester": data_smt[0],
             "nama_semester": data_smt[1],
             "prodi": data_prodi[0],
@@ -58,7 +58,7 @@ export default function Tambah({profil, prodis, semesters}){
                     <div className="col-sm-12">
                         <nav className="navbar navbar-light bg-light">
                             <div className="container-fluid">
-                                <span className="navbar-brand mb-0 h1">Tambah : Kelas Perkuliahan</span>
+                                <span className="navbar-brand mb-0 h1">Tambah : Modul Perkuliahan</span>
                                 <div className="float-end">
                                     <Link href="/dosen/modul">
                                         <button type="button" className="btn btn-primary btn-sm"><FontAwesomeIcon icon={ faArrowAltCircleLeft }/> Kembali </button>
@@ -71,10 +71,11 @@ export default function Tambah({profil, prodis, semesters}){
                             <div className="card-body">
 
                                 <div className="alert alert-primary" role="alert">
-                                    Tambahkan Informasi Terkait kelas Perkuliahan. <br />
+                                    Tambahkan Informasi Terkait dengan Modul Perkuliahan (jika ada). Modul ini akan dilihat dan diakses oleh mahasiswa pada kelas yang anda ampu  <br />
                                     {errors.nm_kelas && errors.nm_kelas.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Kelas wajib diisi <br /> </>}
                                     {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
                                     {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
+                                    {errors.nama_file && errors.nama_file.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/>  File modul wajib diisi <br /></>}
                                 </div>
 
                                 {stateFormMessage.error && (            
@@ -120,13 +121,9 @@ export default function Tambah({profil, prodis, semesters}){
                                         </select>
                                         <label >Program Studi</label>
                                     </div>
-                                    <div className="mb-3">
-                                        <small>Dokumen Modul</small>
-                                        <input
-                                            type="file"
-                                            className="form-control"
-                                            {...register("nama_file", { required: true })}
-                                        />
+                                    <div className="form-floating mb-3">
+                                        <input type="text" className="form-control" placeholder="Modulu pertemuan 1" {...register("nama_file", {required: true})} />
+                                        <label>Link Modul</label>
                                     </div>
                                     <div className="d-grid gap-2">
                                         <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary btn-lg mr-2">

@@ -141,9 +141,9 @@ export default function Detail({kelas, profil, kelas_material}){
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Kode Kelas</label>
+                                        <label  className="col-sm-3 col-form-label">Kode Masuk Kelas</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {kelas.kode_kelas}</label>
+                                        <label className="col-sm-10 col-form-label">: <b>{kelas.kode_kelas}</b></label>
                                         </div>
                                     </div>
                                     <div className="row">
@@ -270,7 +270,7 @@ export default function Detail({kelas, profil, kelas_material}){
                                                 <dd className="col-sm-8">: {item.judul}</dd>
 
                                                 <dd className="col-sm-4">Materi</dd>
-                                                <dd className="col-sm-8">: {item.materi}</dd>
+                                                <dd className="col-sm-8">: <Link href={item.materi} target="_blank_">Download</Link></dd>
 
                                                 <dd className="col-sm-4">Soal Latihan</dd>
                                                 <dd className="col-sm-8">: {item.keyword_soal}</dd>
@@ -279,7 +279,7 @@ export default function Detail({kelas, profil, kelas_material}){
                                                 <dd className="col-sm-8">: {item.deadline}</dd>
 
 
-                                                <dd className="col-sm-4">Token</dd>
+                                                <dd className="col-sm-4">Token Latihan</dd>
                                                 <dd className="col-sm-8">: {item.token}</dd>
                                             </dl>
                                             <div className="btn-group" role="group" aria-label="Basic example">

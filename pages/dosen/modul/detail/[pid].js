@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowAltCircleLeft, faFilePdf } from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleLeft, faDownload, faFilePdf } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../../../components/dosen_sidebar';
 import Link from 'next/link';
@@ -23,7 +23,9 @@ export default function Detail({modul, profil}){
                                     <span className="navbar-brand mb-0 h1">Informasi : Modul Perkuliahan</span>
                                     <div className="float-end">
                                         <Link href="/dosen/modul">
-                                            <button type="button" className="btn btn-primary btn-sm"><FontAwesomeIcon icon={ faArrowAltCircleLeft }/> Kembali </button>
+                                            <button type="button" className="btn btn-primary btn-sm">
+                                                <FontAwesomeIcon icon={ faArrowAltCircleLeft }/> Kembali 
+                                            </button>
                                         </Link>
                                     </div>
                                 </div>
@@ -38,9 +40,12 @@ export default function Detail({modul, profil}){
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Deskripsi atau Bahan ajar lain :</label>
+                                        <label className="col-sm-3 col-form-label">Deskripsi</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">{modul.deskripsi_modul}</label>
+                                        <label className="col-sm-10 col-form-label">: </label>
+                                        </div>
+                                        <div className="col-sm-12 highlight mt-3">
+                                        {modul.deskripsi_modul}
                                         </div>
                                     </div>
                                     <div className="row">
@@ -58,9 +63,9 @@ export default function Detail({modul, profil}){
                                     <div className=" row">
                                         <label  className="col-sm-3 col-form-label">Dokumen Modul</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {''}
-                                            <Link href="/dosen/modul/pdf">
-                                                <label class=""><FontAwesomeIcon icon={ faFilePdf }/> PDF </label>
+                                        <label className="col-sm-10 col-form-label">:{' '}
+                                            <Link href={modul.nama_file} >
+                                                <label><FontAwesomeIcon icon={ faDownload }/> Download</label>
                                             </Link>
                                         </label>
                                         </div>
