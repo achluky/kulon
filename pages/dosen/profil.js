@@ -38,6 +38,9 @@ export default function Beranda({profil}){
 
                                         <dt className="col-sm-3">NIDN</dt>
                                         <dd className="col-sm-9">: {profil.nim_nidn}</dd>
+
+                                        <dt className="col-sm-3">Tipe</dt>
+                                        <dd className="col-sm-9">: {profil.tipe.charAt(0) .toUpperCase() + profil.tipe.slice(1) .toLowerCase()}</dd>
                                     </dl>
                                 </div>
                             </div>

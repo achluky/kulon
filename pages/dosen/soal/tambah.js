@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faArrowAltCircleLeft, faTimesCircle, faCheckCircle, faFire, faPlus, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faArrowAltCircleLeft, faTimesCircle, faCheckCircle, faFire, faPlus, faPlusCircle, faMinusCircle, faTags } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../../components/dosen_sidebar';
 import Link from 'next/link';
@@ -14,14 +14,13 @@ import { soalService } from '../../../services';
 import { useState } from 'react';
 import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
-import Editor from '../../../components/editor';
+import { faPinterest } from '@fortawesome/free-brands-svg-icons';
 
 export default function Tambah({profil, prodis, semesters, modul, kelas_material}){
     const [stateFormMessage, setStateFormMessage] = useState({});
     const { register, handleSubmit, formState } = useForm();
     const { errors } = formState;
     const [size, setSize] = useState(1);
-
 
     function createArrayWithNumbers(length) {
         return Array.from({ length }, (_, k) => k + 1);
@@ -97,72 +96,82 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                         <div className="pb-3"></div>
 
                             <form onSubmit={handleSubmit(onSubmit)}>
-                                <div className="alert alert-primary" role="alert">
-                                    Tambahkan Informasi Terkait Soal & User Case <br />
-                                    {errors.nama_soal && errors.nama_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
-                                    {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Modul wajib diisi <br /> </>}
-                                    {errors.deskripsi_soal && errors.deskripsi_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Deskripsi Soal wajib diisi <br /> </>}
-                                    {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
-                                    {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
-                                    {errors.keyword && errors.keyword.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Keyword wajib diisi</>}
-                                </div>
-
-                                {stateFormMessage.error && (            
-                                    <div className="alert alert-danger" role="alert">
-                                        <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
-                                    </div>
-                                )}
-
-                                {stateFormMessage.error===false && (            
-                                    <div className="alert alert-primary" role="alert">
-                                        <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
-                                    </div>
-                                )}
+                               
                                 <div className="card mb-3">
-                                    <span className="navbar-brand mb-0 ms-3 lead "><FontAwesomeIcon icon={ faFire }/> Informasi Soal</span>
+                                    <span className="navbar-brand mb-0 ms-3 mt-3 lead "><FontAwesomeIcon icon={ faTags }/> Informasi Soal</span>
                                     <div className="card-body">
+                                        <div className="alert alert-primary" role="alert">
+                                            Tambahkan Informasi Terkait Soal<br />
+                                            {errors.nama_soal && errors.nama_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
+                                            {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Modul wajib diisi <br /> </>}
+                                            {errors.deskripsi_soal && errors.deskripsi_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Deskripsi Soal wajib diisi <br /> </>}
+                                            {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
+                                            {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
+                                            {errors.keyword && errors.keyword.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Keyword wajib diisi</>}
+                                        </div>
+
+                                        {stateFormMessage.error && (            
+                                            <div className="alert alert-danger" role="alert">
+                                                <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
+                                            </div>
+                                        )}
+
+                                        {stateFormMessage.error===false && (            
+                                            <div className="alert alert-primary" role="alert">
+                                                <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
+                                            </div>
+                                        )}
                                         <div className="form-floating mb-3">
                                             <input type="text" className="form-control" placeholder="A.1" {...register("nama_soal", {required: true})} />
                                             <label>Nama Soal</label>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <Editor />
-                                        </div>
-                                        
                                         <div className="form-floating mb-3">
-                                            <select className="form-select" placeholder="Materi kelas" {...register("id_kelas_material", { required: true })} >
-                                                <option value="">Ke - </option>
-                                                {kelas_material.map((mingguke)=>{
-                                                    return (
-                                                        <option value={mingguke.id_kelas_material} key={mingguke.id_kelas_material}>Kelas {mingguke.nama_kelas} Minggu Ke-{mingguke.minggu_ke} Semester {mingguke.nama_semester}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                            <label>Materi Kelas</label>
+                                            <textarea className="form-control" placeholder="Deskripsi" style={{height: 200}} {...register("deskripsi_soal", {required: true})} rows={200} ></textarea>
+                                            <label>Deskripsi</label>
                                         </div>
-                                        <div className="form-floating mb-3">
-                                            <select className="form-select" {...register("nama_modul", { required: true })} >
-                                                <option value="">Pilih Modul</option>
-                                                {modul.map((mod)=>{
-                                                    return (
-                                                        <option value={mod.id_modul+'_'+mod.nama_modul} key={mod.id_modul}>{mod.nama_modul}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                            <label >Modul</label>
+
+                                        <div className="row">
+                                        <div className="col-sm-6">
+                                            <div className="form-floating mb-3">
+                                                <select className="form-select" placeholder="Materi kelas" {...register("id_kelas_material", { required: true })} >
+                                                    <option value="">Ke - </option>
+                                                    {kelas_material.map((mingguke)=>{
+                                                        return (
+                                                            <option value={mingguke.id_kelas_material} key={mingguke.id_kelas_material}>Kelas {mingguke.nama_kelas} Minggu Ke-{mingguke.minggu_ke} Semester {mingguke.nama_semester}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                                <label>Materi Kelas</label>
+                                            </div>
                                         </div>
-                                        <div className="form-floating mb-3">
-                                            <select className="form-select" {...register("semester", { required: true })} >
-                                                <option value="">Pilih Semester</option>
-                                                {semesters.map((semester)=>{
-                                                    return (
-                                                        <option value={semester.id_semester+'_'+semester.nama_semester} key={semester.id_semester}>{semester.nama_semester}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                            <label >Semester</label>
+                                        <div className="col-sm-6">
+                                            <div className="form-floating mb-3">
+                                                <select className="form-select" {...register("nama_modul", { required: true })} >
+                                                    <option value="">Pilih Modul</option>
+                                                    {modul.map((mod)=>{
+                                                        return (
+                                                            <option value={mod.id_modul+'_'+mod.nama_modul} key={mod.id_modul}>{mod.nama_modul}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                                <label >Modul</label>
+                                            </div>
                                         </div>
+                                        <div className="col-sm-6">
+                                            <div className="form-floating mb-3">
+                                                <select className="form-select" {...register("semester", { required: true })} >
+                                                    <option value="">Pilih Semester</option>
+                                                    {semesters.map((semester)=>{
+                                                        return (
+                                                            <option value={semester.id_semester+'_'+semester.nama_semester} key={semester.id_semester}>{semester.nama_semester}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                                <label >Semester</label>
+                                            </div>
+                                            </div>
+                                        <div className="col-sm-6">
                                         <div className="form-floating mb-3">
                                                 <select className="form-select" {...register("prodi", { required: true })} >
                                                     <option value="">Pilih Prodi</option>
@@ -173,13 +182,19 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                                                     })}
                                                 </select>
                                                 <label >Program Studi</label>
-                                            </div>
+                                        </div>
+                                        </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="card mb-3">
-                                    <span className="navbar-brand mb-0 ms-3 lead "><FontAwesomeIcon icon={ faFire }/> Mentukan Use Case (Masukan & Keluaran)</span>
+                                    <span className="navbar-brand mb-0 ms-3 mt-3 lead "><FontAwesomeIcon icon={ faTags }/> Mentukan Test Case (Masukan & Keluaran)</span>
                                     
                                     <div className="card-body">
+                                        <div className="alert alert-primary" role="alert">
+                                            Tambahkan Informasi Terkait Test Case<br />
+                                            {errors.masukan && errors.masukan.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
+                                        </div>
 
                                         <div className="d-grid gap-2 d-md-flex mb-4">
                                             <button className="btn btn-info me-md-2" type="button"  onClick={() => setSize(size + 1)}>
@@ -256,7 +271,6 @@ export async function getServerSideProps(context) {
     const result_modul = await fetch(baseApiUrl_modul)
     const modul = await result_modul.json();
 
-    // change userEffect
     const baseApiUrl_kelas_material = `${origin}/api/kelas_material/nidn/${profil.nim_nidn}`;
     const result_kelas_material = await fetch(baseApiUrl_kelas_material)
     const kelas_material  = await result_kelas_material.json();

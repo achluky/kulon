@@ -14,20 +14,9 @@ import Login from '../../../../components/login';
 import { soalService } from '../../../../services';
 import { useState, useEffect } from 'react';
 import moment from "moment";
-import ReactMarkdown from 'react-markdown';
 
-export default function Edit({origin, soal, profil, prodis, semesters, modul}){
+export default function Edit({origin, soal, profil, prodis, semesters, modul, kelasmaterial}){
     const [stateFormMessage, setStateFormMessage] = useState({});
-    const [kelasmaterial, setKelasmaterial] = useState([{id_kelas_material:"",nama_kelas:"", minggu_ke:"", nama_semester:"" }]);
-    useEffect(async () => {
-        const fetchData = async () => {
-            const baseApiUrl_kelas_material = origin+"/api/kelas_material/nidn/"+profil.nim_nidn;
-            const result_kelas_material = await fetch(baseApiUrl_kelas_material)
-            const kelasmaterial  = await result_kelas_material.json();
-            setKelasmaterial(kelasmaterial);
-        };
-        fetchData();
-    }, [kelasmaterial]);
     
     const { register, handleSubmit, formState } = useForm({
         defaultValues: {
@@ -116,18 +105,10 @@ export default function Edit({origin, soal, profil, prodis, semesters, modul}){
                                         <input type="text" className="form-control" placeholder="Nama Soal" {...register("nama_soal", {required: true})} />
                                         <label>Judul/Nama Soal</label>
                                     </div>
-                                    {/* <div className="form-floating mb-3">
-                                        <textarea className="form-control" placeholder="Deskripsi" style={{height: 300}} {...register("deskripsi_soal", {required: true})} rows={200} ></textarea>
+                                    <div className="form-floating mb-3">
+                                        <textarea className="form-control" placeholder="Deskripsi" style={{height: 200}} {...register("deskripsi_soal", {required: true})} rows={200} ></textarea>
                                         <label>Deskripsi</label>
-                                    </div> */}
-
-                                    <div className="mb-3">
-                                        {/* <Editor deskripsi={soal.deskripsi_soal} onChange={textChangeHandler} /> */}
-                                        <ReactMarkdown>
-                                            
-                                        </ReactMarkdown>
                                     </div>
-                                    
                                     <div className="form-floating mb-3">
                                             <select className="form-select" placeholder="Materi kelas" {...register("id_kelas_material", { required: true })} >
                                                 <option value="">Ke - </option>
@@ -213,6 +194,10 @@ export async function getServerSideProps(context) {
     const result_modul = await fetch(baseApiUrl_modul)
     const modul = await result_modul.json();
 
+    const baseApiUrl_kelas_material = `${origin}/api/kelas_material/nidn/${profil.nim_nidn}`;
+    const result_kelas_material = await fetch(baseApiUrl_kelas_material)
+    const kelasmaterial  = await result_kelas_material.json();
+
     return {
         props: {
             origin,
@@ -220,7 +205,8 @@ export async function getServerSideProps(context) {
             profil,
             prodis,
             semesters,
-            modul
+            modul,
+            kelasmaterial
         },
     };
 }

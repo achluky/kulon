@@ -10,7 +10,7 @@ export default function editor ({deskripsi}) {
   return (
     <MdEditor
       style={{ height: "200px" }}
-      value="Deskripsi"
+      value={deskripsi}
       renderHTML={(text) => <ReactMarkdown source={text} />}
     />
   );

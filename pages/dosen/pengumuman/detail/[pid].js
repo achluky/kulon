@@ -35,27 +35,28 @@ export default function Detail({pengumuman, profil}){
                             <div className="card">
                                 <div className="card-body p-4">
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Judul</label>   
-                                        <div className="col-sm-9">
-                                            <label className="col-sm-10 col-form-label">: {pengumuman.judul}</label>
+                                        <label className="col-sm-4 ">Judul</label>   
+                                        <div className="col-sm-8">
+                                            <label className="col-sm-10 ">: {pengumuman.judul}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Deskripsi Pengumuman lengkap: </label>   
-                                        <div className="col-sm-9">
-                                            <label className="col-sm-10 col-form-label">{pengumuman.pengumuman}</label>
+                                        <label className="col-sm-4 ">Deskripsi Pengumuman lengkap</label>   
+                                        <div className="col-sm-8">: </div>
+                                        <div className="col-sm-12 highlight mt-3" style={{ whiteSpace: "pre-line" }}>
+                                        {pengumuman.pengumuman}
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Semester</label>
-                                        <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {pengumuman.nama_semester}</label>
+                                        <label  className="col-sm-4 ">Semester</label>
+                                        <div className="col-sm-8">
+                                        <label className="col-sm-10 ">: {pengumuman.nama_semester}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Program Studi</label>
-                                        <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {pengumuman.nama_prodi}</label>
+                                        <label  className="col-sm-4 ">Program Studi</label>
+                                        <div className="col-sm-8">
+                                        <label className="col-sm-10 ">: {pengumuman.nama_prodi}</label>
                                         </div>
                                     </div>
                                 </div>

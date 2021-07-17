@@ -154,16 +154,14 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                         </li>
                                     </ul>
                                     <div className="card mt-4">
-                                        <div className="card-body p-4">
 
-                                            <p className="">
+                                        <p className="">
                                                 Modul : {soal.nama_modul}  <br/>
                                                 Bahasa Pemrograman : {soal.bahasa_pemrograman} <br/>
                                                 Running Time : {soal.runnig_time}
-                                            </p>
-                                            <p>
-                                                {soal.deskripsi_soal}
-                                            </p>
+                                        </p>
+                                        <div className="card-body p-4" dangerouslySetInnerHTML={{ __html: soal.deskripsi_soal}}>
+
 
                                         </div>
                                     </div>

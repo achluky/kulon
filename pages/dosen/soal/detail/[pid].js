@@ -10,6 +10,7 @@ import {
 } from '../../../../utility/utils';
 
 export default function Detail({soal, profil}){
+    console.log(soal.deskripsi_soal);
     return(
         <div>
             <div className="row">
@@ -32,39 +33,34 @@ export default function Detail({soal, profil}){
                             <div className="card">
                                 <div className="card-body p-4">
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Nama/Judul Soal</label>   
+                                        <label className="col-sm-3">Nama/Judul Soal</label>   
                                         <div className="col-sm-9">
-                                            <label className="col-sm-10 col-form-label">: {soal.nama_soal}</label>
+                                            <label className="col-sm-10">: {soal.nama_soal}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Modul</label>   
+                                        <label className="col-sm-3 ">Modul</label>   
                                         <div className="col-sm-9">
-                                            <label className="col-sm-10 col-form-label">: {soal.nama_modul}</label>
+                                            <label className="col-sm-10 ">: {soal.nama_modul}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Deskripsi Soal</label>
+                                        <label  className="col-sm-3 ">Semester</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">:</label>
+                                        <label className="col-sm-10 ">: {soal.nama_semester}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-sm-12">
-                                        <label className="col-sm-12 col-form-label highlight">{soal.deskripsi_soal}</label>
+                                        <label  className="col-sm-3 ">Program Studi</label>
+                                        <div className="col-sm-9">
+                                        <label className="col-sm-10 ">: {soal.nama_prodi}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Semester</label>
-                                        <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {soal.nama_semester}</label>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Program Studi</label>
-                                        <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {soal.nama_prodi}</label>
-                                        </div>
+                                        <label className="col-sm-3 ">Deskripsi Soal</label>
+                                        <div className="col-sm-9 highlight mt-3 rounded" style={{ whiteSpace: "pre-line" }} > {
+                                            soal.deskripsi_soal
+                                        }</div>
                                     </div>
                                 </div>
                             </div>

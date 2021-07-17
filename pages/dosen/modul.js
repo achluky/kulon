@@ -85,7 +85,7 @@ export default function Kelas({modul, profil}) {
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                            <th scope="col">No.</th>
+                                            <th scope="col" style={{width:20}}>No.</th>
                                             <th scope="col">Nama Modul</th>
                                             <th scope="col">Semester</th>
                                             <th scope="col">Program Studi</th>

@@ -34,36 +34,36 @@ export default function Detail({modul, profil}){
                             <div className="card">
                                 <div className="card-body p-4">
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Nama Modul</label>   
+                                        <label className="col-sm-3 ">Nama Modul</label>   
                                         <div className="col-sm-9">
-                                            <label className="col-sm-10 col-form-label">: {modul.nama_modul}</label>
+                                            <label className="col-sm-10 ">: {modul.nama_modul}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Deskripsi</label>
+                                        <label className="col-sm-3 ">Deskripsi</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: </label>
+                                        <label className="col-sm-10 ">: </label>
                                         </div>
                                         <div className="col-sm-12 highlight mt-3">
                                         {modul.deskripsi_modul}
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Semester</label>
+                                        <label  className="col-sm-3 ">Semester</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {modul.nama_semester}</label>
+                                        <label className="col-sm-10 ">: {modul.nama_semester}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Program Studi</label>
+                                        <label  className="col-sm-3 ">Program Studi</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {modul.nama_prodi}</label>
+                                        <label className="col-sm-10 ">: {modul.nama_prodi}</label>
                                         </div>
                                     </div>
                                     <div className=" row">
-                                        <label  className="col-sm-3 col-form-label">Dokumen Modul</label>
+                                        <label  className="col-sm-3 ">Dokumen Modul</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">:{' '}
+                                        <label className="col-sm-10 ">:{' '}
                                             <Link href={modul.nama_file} >
                                                 <label><FontAwesomeIcon icon={ faDownload }/> Download</label>
                                             </Link>

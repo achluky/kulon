@@ -9,7 +9,7 @@ import {
     verifyToken
 } from '../../../../utility/utils';
 
-export default function Peserta({kelas}){
+export default function Peserta({kelas, kelas_peserta}){
     return(
         <div>
             <div className="row">
@@ -32,21 +32,21 @@ export default function Peserta({kelas}){
                             <div className="card">
                                 <div className="card-body p-4">
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Nama Kelas</label>
+                                        <label className="col-sm-3 ">Nama Kelas</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {kelas.nama_kelas}</label>
+                                        <label className="col-sm-10 ">: {kelas.nama_kelas}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Semester</label>
+                                        <label  className="col-sm-3 ">Semester</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {kelas.nama_semester}</label>
+                                        <label className="col-sm-10 ">: {kelas.nama_semester}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Program Studi</label>
+                                        <label  className="col-sm-3 ">Program Studi</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {kelas.nama_prodi}</label>
+                                        <label className="col-sm-10 ">: {kelas.nama_prodi}</label>
                                         </div>
                                     </div>            
                                 </div>
@@ -57,19 +57,21 @@ export default function Peserta({kelas}){
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                            <th scope="col" width={10}>No.</th>
+                                            <th scope="col" width={20}>No.</th>
                                             <th scope="col" width={350}>Nama Peserta</th>
                                             <th scope="col">NIM</th>
                                             <th scope="col">Nilai</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td scope="row">1</td>
-                                                <td>Mark</td>
-                                                <td>A123098</td>
-                                                <td>100</td>
+                                        {kelas_peserta.map((p, index) => (
+                                            <tr key={index + 1}>
+                                                <td scope="row">{index + 1}</td>
+                                                <td>{p.nama_mhs}</td>
+                                                <td>{p.nim}</td>
+                                                <td></td>
                                             </tr>
+                                        ))}
                                         </tbody>
                                     </table>
                                 </div>
@@ -94,11 +96,15 @@ export async function getServerSideProps(context) {
     const result = await fetch(baseApiUrl)
     const kelas = await result.json();
 
+    const baseApiUrl_daftar_peserta = `${origin}/api/kelas_mahasiswa/${query.pid}`;
+    const result_perserta = await fetch(baseApiUrl_daftar_peserta)
+    const kelas_peserta = await result_perserta.json();
     return {
         props: {
             baseApiUrl,
             profil,
             kelas: kelas,
+            kelas_peserta
         },
     };
 }

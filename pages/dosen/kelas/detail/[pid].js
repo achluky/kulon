@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faSave, faArrowAltCircleLeft, faTimesCircle, faPlusCircle, faCheckCircle, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faList, faSave, faArrowAltCircleLeft, faTimesCircle, faPlusCircle, faCheckCircle, faEdit, faTrash, faDownload, faSearch } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../../../components/dosen_sidebar';
 import Link from 'next/link';
@@ -123,41 +123,35 @@ export default function Detail({kelas, profil, kelas_material}){
                             <div className="card mb-3">
                                 <div className="card-body p-4">
                                     <div className="row">
-                                        <label className="col-sm-3 col-form-label">Nama Kelas</label>
+                                        <label className="col-sm-3 ">Nama Kelas</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {kelas.nama_kelas}</label>
+                                        <label className="col-sm-10 ">: {kelas.nama_kelas}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Semester</label>
+                                        <label  className="col-sm-3 ">Semester</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {kelas.nama_semester}</label>
+                                        <label className="col-sm-10 ">: {kelas.nama_semester}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Program Studi</label>
+                                        <label  className="col-sm-3 ">Program Studi</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {kelas.nama_prodi}</label>
+                                        <label className="col-sm-10 ">: {kelas.nama_prodi}</label>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Kode Masuk Kelas</label>
+                                        <label  className="col-sm-3 ">Kode Masuk Kelas</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: <b>{kelas.kode_kelas}</b></label>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <label  className="col-sm-3 col-form-label">Jumlah Peserta</label>
-                                        <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: </label>
+                                        <label className="col-sm-10 ">: <b>{kelas.kode_kelas}</b></label>
                                         </div>
                                     </div>
                                     <div className=" row">
-                                        <label  className="col-sm-3 col-form-label">Peserta</label>
+                                        <label  className="col-sm-3 ">Peserta</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 col-form-label">: {''}
+                                        <label className="col-sm-10 ">: {''}
                                             <Link href={"/dosen/kelas/peserta/"+ kelas.id_kelas}>
-                                                <button className="btn btn-primary btn-sm" type="submit"><FontAwesomeIcon icon={ faList }/> Daftar Peserta</button>
+                                                <label className="btn btn-primary btn-sm"><FontAwesomeIcon icon={ faList }/> Daftar Peserta</label>
                                             </Link>
                                         </label>
                                         </div>
@@ -266,28 +260,31 @@ export default function Detail({kelas, profil, kelas_material}){
                                         </AccordionItemHeading>
                                         <AccordionItemPanel>
                                             <dl className="row">
-                                                <dd className="col-sm-4">Judul Perkuliahan</dd>
-                                                <dd className="col-sm-8">: {item.judul}</dd>
+                                                <dd className="col-sm-4 mb-1">Judul Perkuliahan</dd>
+                                                <dd className="col-sm-8 mb-1">: {item.judul}</dd>
 
-                                                <dd className="col-sm-4">Materi</dd>
-                                                <dd className="col-sm-8">: <Link href={item.materi} target="_blank_">Download</Link></dd>
+                                                <dd className="col-sm-4 mb-1">Materi</dd>
+                                                <dd className="col-sm-8 mb-1" >: {' '}  
+                                                    <Link href={item.materi} target="_blank_">
+                                                        <label><FontAwesomeIcon icon={ faDownload }/> Download</label>
+                                                    </Link>
+                                                </dd>
 
-                                                <dd className="col-sm-4">Soal Latihan</dd>
-                                                <dd className="col-sm-8">: {item.keyword_soal}</dd>
+                                                <dd className="col-sm-4 mb-1">Soal Latihan</dd>
+                                                <dd className="col-sm-8 mb-1">: {' '}
+                                                    <Link href={"/mahasiswa/kelas/latihan/"+item.id_kelas_material}>
+                                                    <label><FontAwesomeIcon icon={ faSearch }/> Lihat Latihan</label>
+                                                    </Link>
+                                                    {' '} [{item.keyword_soal}]
+                                                </dd>
 
-                                                <dd className="col-sm-4">Deadline Pengumpulan Latihan</dd>
-                                                <dd className="col-sm-8">: {item.deadline}</dd>
+                                                <dd className="col-sm-4 mb-1">Deadline Pengumpulan Latihan</dd>
+                                                <dd className="col-sm-8 mb-1">: {item.deadline}</dd>
 
-
-                                                <dd className="col-sm-4">Token Latihan</dd>
-                                                <dd className="col-sm-8">: {item.token}</dd>
+                                                <dd className="col-sm-4 mb-1">Token Latihan</dd>
+                                                <dd className="col-sm-8 mb-1">: {item.token}</dd>
                                             </dl>
                                             <div className="btn-group" role="group" aria-label="Basic example">
-                                                <Link href= {""} >
-                                                    <button type="button" className="btn btn-primary btn-sm">
-                                                        <FontAwesomeIcon icon={ faEdit }/> Edit
-                                                    </button>
-                                                </Link>
                                                 <button type="button" className="btn btn-danger btn-sm" onClick={() => deleteKelasMaterial(item.id_kelas_material)} >
                                                     <FontAwesomeIcon icon={ faTrash }/> Hapus
                                                 </button>
