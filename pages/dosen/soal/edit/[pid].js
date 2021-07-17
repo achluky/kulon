@@ -12,11 +12,23 @@ import {
 } from '../../../../utility/utils';
 import Login from '../../../../components/login';
 import { soalService } from '../../../../services';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from "moment";
+import ReactMarkdown from 'react-markdown';
 
-export default function Edit({soal, profil, prodis, semesters, modul, kelas_material}){
+export default function Edit({origin, soal, profil, prodis, semesters, modul}){
     const [stateFormMessage, setStateFormMessage] = useState({});
+    const [kelasmaterial, setKelasmaterial] = useState([{id_kelas_material:"",nama_kelas:"", minggu_ke:"", nama_semester:"" }]);
+    useEffect(async () => {
+        const fetchData = async () => {
+            const baseApiUrl_kelas_material = origin+"/api/kelas_material/nidn/"+profil.nim_nidn;
+            const result_kelas_material = await fetch(baseApiUrl_kelas_material)
+            const kelasmaterial  = await result_kelas_material.json();
+            setKelasmaterial(kelasmaterial);
+        };
+        fetchData();
+    }, [kelasmaterial]);
+    
     const { register, handleSubmit, formState } = useForm({
         defaultValues: {
             id_soal: soal.id_soal,
@@ -73,29 +85,30 @@ export default function Edit({soal, profil, prodis, semesters, modul, kelas_mate
                             </div>
                         </nav>
 
+
+                        <form onSubmit={handleSubmit(onSubmit)}>
+
+                        <div className="alert alert-primary" role="alert">
+                            Tambahkan Informasi Terkait Soal. <br />
+                            {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Kelas wajib diisi <br /> </>}
+                            {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
+                            {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
+                        </div>
+
+                        {stateFormMessage.error && (            
+                            <div className="alert alert-danger" role="alert">
+                                <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
+                            </div>
+                        )}
+
+                        {stateFormMessage.error===false && (            
+                            <div className="alert alert-primary" role="alert">
+                                <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
+                            </div>
+                        )}
+                        
                         <div className="card">
                             <div className="card-body">
-                                
-                                <div className="alert alert-primary" role="alert">
-                                    Tambahkan Informasi Terkait Soal. <br />
-                                    {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Kelas wajib diisi <br /> </>}
-                                    {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
-                                    {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
-                                </div>
-
-                                {stateFormMessage.error && (            
-                                    <div className="alert alert-danger" role="alert">
-                                        <FontAwesomeIcon icon={ faTimesCircle }/> {stateFormMessage.message}
-                                    </div>
-                                )}
-
-                                {stateFormMessage.error===false && (            
-                                    <div className="alert alert-primary" role="alert">
-                                        <FontAwesomeIcon icon={ faCheckCircle }/> {stateFormMessage.message}
-                                    </div>
-                                )}
-                                
-                                <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="form-floating mb-3">
                                         <input type="hidden" className="form-control" {...register("id_soal", {required: true})} />
                                     </div>
@@ -103,19 +116,27 @@ export default function Edit({soal, profil, prodis, semesters, modul, kelas_mate
                                         <input type="text" className="form-control" placeholder="Nama Soal" {...register("nama_soal", {required: true})} />
                                         <label>Judul/Nama Soal</label>
                                     </div>
-                                    <div className="form-floating mb-3">
+                                    {/* <div className="form-floating mb-3">
                                         <textarea className="form-control" placeholder="Deskripsi" style={{height: 300}} {...register("deskripsi_soal", {required: true})} rows={200} ></textarea>
                                         <label>Deskripsi</label>
+                                    </div> */}
+
+                                    <div className="mb-3">
+                                        {/* <Editor deskripsi={soal.deskripsi_soal} onChange={textChangeHandler} /> */}
+                                        <ReactMarkdown>
+                                            
+                                        </ReactMarkdown>
                                     </div>
+                                    
                                     <div className="form-floating mb-3">
-                                        <select className="form-select" placeholder="Materi kelas" {...register("id_kelas_material", { required: true })} >
-                                            <option value="">Ke - </option>
-                                            {kelas_material.map((mingguke)=>{
-                                                return (
-                                                    <option value={mingguke.id_kelas_material} key={mingguke.id_kelas_material}>Kelas {mingguke.nama_kelas} Minggu Ke-{mingguke.minggu_ke} Semester {mingguke.nama_semester}</option>
-                                                )
-                                            })}
-                                        </select>
+                                            <select className="form-select" placeholder="Materi kelas" {...register("id_kelas_material", { required: true })} >
+                                                <option value="">Ke - </option>
+                                                {kelasmaterial.map((mingguke)=>{
+                                                    return (
+                                                        <option value={mingguke.id_kelas_material} key={mingguke.id_kelas_material}>Kelas {mingguke.nama_kelas} Minggu Ke-{mingguke.minggu_ke} Semester {mingguke.nama_semester}</option>
+                                                    )
+                                                })}
+                                            </select>
                                         <label>Materi Kelas</label>
                                     </div>
                                     <div className="form-floating mb-3">
@@ -151,22 +172,16 @@ export default function Edit({soal, profil, prodis, semesters, modul, kelas_mate
                                         </select>
                                         <label >Program Studi</label>
                                     </div>
-                                    <div className="d-grid gap-2 mb-2">
-                                        <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary mr-2">
-                                            {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
-                                            <FontAwesomeIcon icon={ faSave }/> Perbaharui Data
-                                        </button>
-                                    </div>
-                                    <div className="d-grid gap-2">
-                                        <Link href={'dosen/soal/user_case'}>
-                                            <a className="w-100 btn btn-info mr-2"><FontAwesomeIcon icon={ faFire }/> Lihat Use Case</a>
-                                        </Link>
-                                    </div>
-                                </form>
-                                
                             </div>
                         </div>
+            
+                        <button type="submit" disabled={formState.isSubmitting} className="w-100 btn btn-primary mr-2 mt-3">
+                            {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
+                            <FontAwesomeIcon icon={ faSave }/> Perbaharui Data
+                        </button>
                         
+                        </form>
+                                
                     </div>
                 </div>
             </div>
@@ -174,7 +189,6 @@ export default function Edit({soal, profil, prodis, semesters, modul, kelas_mate
         </div>
     );
 }
-
 
 export async function getServerSideProps(context) {
 
@@ -199,19 +213,14 @@ export async function getServerSideProps(context) {
     const result_modul = await fetch(baseApiUrl_modul)
     const modul = await result_modul.json();
 
-    const baseApiUrl_kelas_material = `${origin}/api/kelas_material/nidn/${profil.nim_nidn}`;
-    const result_kelas_material = await fetch(baseApiUrl_kelas_material)
-    const kelas_material  = await result_kelas_material.json();
-
     return {
         props: {
-            baseApiUrl,
-            profil,
+            origin,
             soal: soal,
+            profil,
             prodis,
             semesters,
-            modul,
-            kelas_material
+            modul
         },
     };
 }
