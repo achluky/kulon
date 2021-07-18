@@ -82,7 +82,7 @@ export default function Kelas({kelas, profil}) {
                             
                             <div className="card">
                                 <div className="card-body">
-                                    <table className="table">
+                                    <table className="table table-striped table-hover">
                                         <thead>
                                             <tr>
                                             <th scope="col" style={{width:20}}>No.</th>

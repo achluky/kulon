@@ -143,7 +143,7 @@ export default function Detail({kelas, profil, kelas_material}){
                                     <div className="row">
                                         <label  className="col-sm-3 ">Kode Masuk Kelas</label>
                                         <div className="col-sm-9">
-                                        <label className="col-sm-10 ">: <b>{kelas.kode_kelas}</b></label>
+                                        <label className="col-sm-10 ">: <div className="badge bg-primary lead h3"><b>{kelas.kode_kelas}</b></div></label>
                                         </div>
                                     </div>
                                     <div className=" row">
@@ -282,7 +282,7 @@ export default function Detail({kelas, profil, kelas_material}){
                                                 <dd className="col-sm-8 mb-1">: {item.deadline}</dd>
 
                                                 <dd className="col-sm-4 mb-1">Token Latihan</dd>
-                                                <dd className="col-sm-8 mb-1">: {item.token}</dd>
+                                                <dd className="col-sm-8 mb-1">: <div className="badge bg-primary lead h3">{item.token}</div></dd>
                                             </dl>
                                             <div className="btn-group" role="group" aria-label="Basic example">
                                                 <button type="button" className="btn btn-danger btn-sm" onClick={() => deleteKelasMaterial(item.id_kelas_material)} >
