@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faTimesCircle, faCheckCircle, faTasks } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faTags } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../components/mahasiswa_sidebar';
 import Link from 'next/link';
@@ -9,6 +9,7 @@ import {
     verifyToken
 } from '../../utility/utils';
 import Login from '../../components/login';
+import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
 
 export default function Kelas({kelas, profil}) {
     return(
@@ -38,11 +39,11 @@ export default function Kelas({kelas, profil}) {
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                            <th scope="col">No.</th>
+                                            <th scope="col" width={10}>No.</th>
                                             <th scope="col">Kelas</th>
                                             <th scope="col">Semester</th>
                                             <th scope="col">Program Studi</th>
-                                            <th scope="col" width={175}>Aksi</th>
+                                            <th scope="col" width={245}>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -60,10 +61,19 @@ export default function Kelas({kelas, profil}) {
                                                             </button>
                                                         </Link>
                                                         <Link href={"/mahasiswa/kelas/latihan/"+kls.id_kelas+""}>
-                                                            <button type="button" className="btn btn-success btn-sm">
-                                                                <FontAwesomeIcon icon={ faTasks }/> Latihan 
+                                                            <button type="button" className="btn btn-info btn-sm">
+                                                                <FontAwesomeIcon icon={ faTags }/> Latihan 
                                                             </button>
                                                         </Link>
+                                                        {kls.status==1 ? (
+                                                            <>
+                                                                <button type="button" className="btn btn-danger btn-sm">
+                                                                    <FontAwesomeIcon icon={ faTags }/> Aktif 
+                                                                </button>
+                                                            </>
+                                                        ):(
+                                                            <></>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -82,6 +92,10 @@ export default function Kelas({kelas, profil}) {
 
 export async function getServerSideProps(context) {
 
+    /**
+     * Ketika Kelas diset tidak aktif oleh dosen atau mhs tersebut lulus maka mhs tersebut diupdate status latihanya adalah tidak aktif pada dokumen: data__kelas_mahasiswa
+     *  
+     **/
     const { req } = context;
     const { origin } = absoluteUrl(req);
     const { data } = getAppCookies(req);

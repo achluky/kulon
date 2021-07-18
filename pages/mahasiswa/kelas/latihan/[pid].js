@@ -12,6 +12,8 @@ import Login from '../../../../components/login';
 import profilePic from '../../../../public/me.jpeg';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
+import fecha from 'fecha'
+
 
 export default function Latihan({profil, kelas_material, origin}){
     const router = useRouter();
@@ -106,7 +108,9 @@ export default function Latihan({profil, kelas_material, origin}){
 
                                 {kelas_material.map((kls_materi, index) => (
                                     <li className="list-group-item d-flex justify-content-between align-items-center" key={index}>
-                                        Minggu Ke - {kls_materi.minggu_ke} [batas waktu pengumpulan: tanggal {kls_materi.deadline}]
+                                        Minggu Ke - {kls_materi.minggu_ke} 
+                                        <br /> Batas waktu pengumpulan : Tanggal {kls_materi.deadline.split('T')[0]} - Jam {kls_materi.deadline.split('T')[1]}
+
                                         {kls_materi.status_pengerjaan == '' ? (
                                             <button type="button" className="btn btn-primary btn-sm" onClick={() => Kerjakan(kls_materi.id_kelas_material)}><FontAwesomeIcon icon={ faWindowRestore }/> Kerjakan </button>
                                         ):(

@@ -43,7 +43,8 @@ export default function Detail({kelas, profil, status_peserta_kelas}){
                 "nama_prodi": kelas.nama_prodi,
                 "createAt": moment().format("DD-MM-YYYY hh:mm:ss"),
                 "updateAt": moment().format("DD-MM-YYYY hh:mm:ss"),
-                "revoke": "0"
+                "revoke": "0",
+                "status": "1", // 1 = aktif 0 = tidak aktif
             }
             const result = await Kelas_mahasiswaService.savekelas_mahasiswa(kelas_mahasiswa);
             setStateFormMessage(result);
