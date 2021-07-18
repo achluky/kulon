@@ -1,12 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faListAlt } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
-
-import Head from '../../../components/head_modif';
-import Header from '../../../components/dosen_header';
 import Side from '../../../components/dosen_sidebar';
-import Footer from '../../../components/footer';
-import Link from 'next/link';
 
 export default function Nilai(){
     return(
