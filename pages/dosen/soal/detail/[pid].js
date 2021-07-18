@@ -58,7 +58,8 @@ export default function Detail({soal, profil}){
                                     </div>
                                     <div className="row">
                                         <label className="col-sm-3 ">Deskripsi Soal</label>
-                                        <div className="col-sm-9 highlight mt-3 rounded" style={{ whiteSpace: "pre-line" }} > {
+                                        <label className="col-sm-9 ">: </label>
+                                        <div className="col-sm-12 highlight mt-3 rounded" style={{ whiteSpace: "pre-line" }} > {
                                             soal.deskripsi_soal
                                         }</div>
                                     </div>

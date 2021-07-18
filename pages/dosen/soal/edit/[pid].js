@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowAltCircleLeft, faSave, faTimesCircle, faCheckCircle, faFileCode, faFire } from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleLeft, faSave, faTimesCircle, faCheckCircle, faFileCode, faFire, faVials } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import Side from '../../../../components/dosen_sidebar';
@@ -160,6 +160,12 @@ export default function Edit({origin, soal, profil, prodis, semesters, modul, ke
                             {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span>} {' '}
                             <FontAwesomeIcon icon={ faSave }/> Perbaharui Data
                         </button>
+
+                        <Link href={'/dosen/soal/testcase/'+soal.id_soal}>
+                            <button  className="w-100 btn btn-warning mr-2 mt-3">
+                                <FontAwesomeIcon icon={ faVials }/> Edit Test Case
+                            </button>
+                        </Link>
                         
                         </form>
                                 

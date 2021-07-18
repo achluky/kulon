@@ -8,7 +8,8 @@ export const soalService = {
     getSoal,
     updateSoal,
     deleteSoal,
-    kodeSoal
+    kodeSoal,
+    updateTestCase
 };
 
 const baseUrl = `${apiUrl}/soal`;
@@ -27,6 +28,10 @@ function getSoal(id){
 
 function updateSoal(data){
     return fetchWrapper.put(baseUrl+"/update", data);
+}
+
+function updateTestCase(data){
+    return fetchWrapper.put(baseUrl+"/updateTestCase", data);
 }
 
 function deleteSoal(data){

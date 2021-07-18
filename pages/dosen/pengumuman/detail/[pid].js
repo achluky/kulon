@@ -41,13 +41,6 @@ export default function Detail({pengumuman, profil}){
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <label className="col-sm-4 ">Deskripsi Pengumuman lengkap</label>   
-                                        <div className="col-sm-8">: </div>
-                                        <div className="col-sm-12 highlight mt-3" style={{ whiteSpace: "pre-line" }}>
-                                        {pengumuman.pengumuman}
-                                        </div>
-                                    </div>
-                                    <div className="row">
                                         <label  className="col-sm-4 ">Semester</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 ">: {pengumuman.nama_semester}</label>
@@ -57,6 +50,13 @@ export default function Detail({pengumuman, profil}){
                                         <label  className="col-sm-4 ">Program Studi</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 ">: {pengumuman.nama_prodi}</label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <label className="col-sm-4 ">Deskripsi Pengumuman lengkap</label>   
+                                        <div className="col-sm-8">: </div>
+                                        <div className="col-sm-12 highlight mt-3" style={{ whiteSpace: "pre-line" }}>
+                                        {pengumuman.pengumuman}
                                         </div>
                                     </div>
                                 </div>

@@ -69,7 +69,10 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
         const result = await soalService.saveSoal(soal);
         setStateFormMessage(result);
     }
-  
+    
+    <styled-components>
+        </styled-components>
+
     return(
         <div>   
             {!profil ? (
@@ -98,16 +101,11 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                             <form onSubmit={handleSubmit(onSubmit)}>
                                
                                 <div className="card mb-3">
-                                    <span className="navbar-brand mb-0 ms-3 mt-3 lead "><FontAwesomeIcon icon={ faTags }/> Informasi Soal</span>
                                     <div className="card-body">
+
                                         <div className="alert alert-primary" role="alert">
-                                            Tambahkan Informasi Terkait Soal<br />
-                                            {errors.nama_soal && errors.nama_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
-                                            {errors.nama_modul && errors.nama_modul.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Modul wajib diisi <br /> </>}
-                                            {errors.deskripsi_soal && errors.deskripsi_soal.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Deskripsi Soal wajib diisi <br /> </>}
-                                            {errors.semester && errors.semester.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi <br /></>}
-                                            {errors.prodi && errors.prodi.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Program Studi wajib diisi <br /></>}
-                                            {errors.keyword && errors.keyword.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Keyword wajib diisi</>}
+                                            Tambahkan Informasi Terkait Soal dan Test Case<br />
+                                            {errors.masukan && errors.masukan.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
                                         </div>
 
                                         {stateFormMessage.error && (            
@@ -124,11 +122,25 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                                         <div className="form-floating mb-3">
                                             <input type="text" className="form-control" placeholder="A.1" {...register("nama_soal", {required: true})} />
                                             <label>Nama Soal</label>
+                                            {errors.nama_soal && errors.nama_soal.type === "required" &&
+                                                <>
+                                                <div className="alert alert-danger mt-2" role="alert" style={{padding: '0.2rem 0.5rem'}}>
+                                                <FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi
+                                                </div>
+                                                </>
+                                            }
                                         </div>
 
                                         <div className="form-floating mb-3">
                                             <textarea className="form-control" placeholder="Deskripsi" style={{height: 200}} {...register("deskripsi_soal", {required: true})} rows={200} ></textarea>
                                             <label>Deskripsi</label>
+                                            {errors.deskripsi_soal && errors.deskripsi_soal.type === "required" && 
+                                                <>
+                                                    <div className="alert alert-danger mt-2" role="alert" style={{padding: '0.2rem 0.5rem'}}>
+                                                        <FontAwesomeIcon icon={ faTimesCircle }/> Deskripsi Soal wajib diisi
+                                                    </div>
+                                                </>
+                                            }
                                         </div>
 
                                         <div className="row">
@@ -143,6 +155,13 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                                                     })}
                                                 </select>
                                                 <label>Materi Kelas</label>
+                                                {errors.id_kelas_material && errors.id_kelas_material.type === "required" &&
+                                                    <>
+                                                    <div className="alert alert-danger mt-2" role="alert" style={{padding: '0.2rem 0.5rem'}}>
+                                                        <FontAwesomeIcon icon={ faTimesCircle }/> Materi kelas wajib diisi
+                                                    </div>
+                                                    </>
+                                                }
                                             </div>
                                         </div>
                                         <div className="col-sm-6">
@@ -156,6 +175,13 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                                                     })}
                                                 </select>
                                                 <label >Modul</label>
+                                                {errors.nama_modul && errors.nama_modul.type === "required" && 
+                                                    <>
+                                                    <div className="alert alert-danger" role="alert" style={{padding: '0.2rem 0.5rem'}}>
+                                                        <FontAwesomeIcon icon={ faTimesCircle }/> Nama Modul wajib diisi
+                                                    </div>
+                                                    </>
+                                                }
                                             </div>
                                         </div>
                                         <div className="col-sm-6">
@@ -169,10 +195,17 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                                                     })}
                                                 </select>
                                                 <label >Semester</label>
+                                                {errors.semester && errors.semester.type === "required" &&
+                                                    <>
+                                                    <div className="alert alert-danger mt-2" role="alert" style={{padding: '0.2rem 0.5rem'}}>
+                                                    <FontAwesomeIcon icon={ faTimesCircle }/> Semester wajib diisi
+                                                    </div>
+                                                    </>
+                                                }
                                             </div>
                                             </div>
                                         <div className="col-sm-6">
-                                        <div className="form-floating mb-3">
+                                            <div className="form-floating mb-3">
                                                 <select className="form-select" {...register("prodi", { required: true })} >
                                                     <option value="">Pilih Prodi</option>
                                                     {prodis.map((prodi)=>{
@@ -182,25 +215,27 @@ export default function Tambah({profil, prodis, semesters, modul, kelas_material
                                                     })}
                                                 </select>
                                                 <label >Program Studi</label>
+                                                {errors.prodi && errors.prodi.type === "required" &&
+                                                    <>
+                                                    <div className="alert alert-danger mt-2" role="alert" style={{padding: '0.2rem 0.5rem'}}>
+                                                        <FontAwesomeIcon icon={ faTimesCircle }/> Materi kelas wajib diisi
+                                                    </div>
+                                                    </>
+                                                }
+                                            </div>
                                         </div>
-                                        </div>
+
                                         </div>
                                     </div>
                                 </div>
                                 <div className="card mb-3">
-                                    <span className="navbar-brand mb-0 ms-3 mt-3 lead "><FontAwesomeIcon icon={ faTags }/> Mentukan Test Case (Masukan & Keluaran)</span>
-                                    
                                     <div className="card-body">
-                                        <div className="alert alert-primary" role="alert">
-                                            Tambahkan Informasi Terkait Test Case<br />
-                                            {errors.masukan && errors.masukan.type === "required" && <><FontAwesomeIcon icon={ faTimesCircle }/> Nama Soal wajib diisi <br /> </>}
-                                        </div>
 
-                                        <div className="d-grid gap-2 d-md-flex mb-4">
-                                            <button className="btn btn-info me-md-2" type="button"  onClick={() => setSize(size + 1)}>
+                                        <div className="d-grid gap-1 d-md-flex mb-4">
+                                            <button className="btn btn-primary me-md-2" type="button"  onClick={() => setSize(size + 1)}>
                                                 <FontAwesomeIcon icon={ faPlusCircle }/> Tambah Jumlah Test Case
                                             </button>
-                                            <button className="btn btn-info" type="button"  onClick={() => setSize(size - 1)}>
+                                            <button className="btn btn-primary" type="button"  onClick={() => setSize(size - 1)}>
                                                 <FontAwesomeIcon icon={ faMinusCircle }/> Kurangi Jumlah Test Case
                                             </button>
                                         </div>
