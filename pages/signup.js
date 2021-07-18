@@ -3,10 +3,10 @@ import styles from '../components/login.module.css';
 import { useForm } from 'react-hook-form';
 import { authService } from '../services';
 import { useRouter } from 'next/router';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import { faUserPlus, faSave } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { faGithub, faAddIcon, faSave, faUserPlus} from "@fortawesome/free-brands-svg-icons";
 
 export default function SignIn({ providers, csrfToken }) {
     const [session, loading] = useSession();
