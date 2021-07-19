@@ -27,14 +27,19 @@ export default function login({props}) {
         {!profil ? (
           <>          
             <Link href={'/masuk'}>
-              <li className="nav-item"> <p className="nav-link" aria-current="page"> <FontAwesomeIcon icon={ faSignInAlt }/> Login </p></li>
+              <li className="nav-item"> 
+                <p className="nav-link" aria-current="page"> <FontAwesomeIcon icon={ faSignInAlt }/> Login </p>
+              </li>
             </Link> 
           </>
         ) : (
           <>
-            <li className="nav-item"> 
-              <p className="nav-link" aria-current="page"> <FontAwesomeIcon icon={ faUserCircle }/> {profil.name}</p>
-            </li>
+
+            <Link href={'/masuk'}>
+              <li className="nav-item"> 
+                <p className="nav-link" aria-current="page"> <FontAwesomeIcon icon={ faUserCircle }/> {profil.name}</p>
+              </li>
+            </Link>
             <li className="nav-item" >
               <p className="nav-link" aria-current="page" onClick={e => handleOnClickLogout(e)}> <FontAwesomeIcon icon={ faSignOutAlt }/>  Logout</p>
             </li>

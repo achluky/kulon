@@ -6,8 +6,6 @@ import Header from '../components/header';
 import Footer from '../components/footer';
 import NextNProgress from 'nextjs-progressbar';
 import PropTypes from 'prop-types';
-// import { Provider } from 'next-auth/client'
-
 function MyApp({ Component, pageProps }) {
   return (
     <>
