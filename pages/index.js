@@ -1,44 +1,73 @@
-import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faListAlt, faCode, faSignInAlt, faHome } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-
 import {
+  absoluteUrl,
   getAppCookies,
   verifyToken
 } from '../utility/utils';
+import {useState} from 'react'
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
-export default function Home({externalPostData}) {
+export default function Home({dosen}) {
+  const [key, setKey] = useState('home');
   return (
     <>
         <div className="pricing-header p-3 pb-md-4 mx-auto text-center">
-          <h3 className="display-6 fw-normal">Kuliah Online (Kulon) {' '} 
-            <code><FontAwesomeIcon icon={ faCode }/> Programming</code>
+          <h3 className="display-6 fw-normal">Kuliah Online (Kulon)
           </h3>
           <p className="fs-5 text-muted">
-              Kulon merupakan salah satu saranan pembelajaran online yang diperuntukan untuk mendukung matakuliah bahasa pemrograman. 
+              Kulon Salah Satu Saranan Pembelajaran Online yang Diperuntukan Untuk Mendukung Matakuliah Bahasa Pemrograman
           </p>
         </div>
 
         <main>
           <div className="row">
-          <ul className="nav nav-tabs justify-content-center">
-              <li className="nav-item">
-                <label className="nav-link active">Tentang Aplikasi</label>
-              </li>
-              <li className="nav-item">
-                <label className="nav-link">Dosen</label>
-              </li>
-              <li className="nav-item">
-                <label className="nav-link" >Ranking</label>
-              </li>
-              <li className="nav-item">
-                <label className="nav-link">Pengembang</label>
-              </li>
-          </ul>
+            <Tabs
+              id="controlled-tab-example"
+              activeKey={key}
+              onSelect={(k) => setKey(k)}
+              className="mb-3"
+            >
+               <Tab eventKey="home" title="Tentang Aplikasi">
 
-          <div className="home mt-4">Aplikasi ini memiliki beberapa fitur diataranya adalah menejemen kelas, modul, pertemuan mingguan, latihan, ujian dan lain-lain. Selain itu aplikasi ini memiliki fasilitas SEB (Save Exam Browser) yang dapat digunakan pada evaluasi pembelajara. Evaluasi pembelaaran daiharapkan dapat membatasi mahasiswa dalam melakukan perbuatan curang.
-          </div>
+                  <div className="home mt-2">Aplikasi ini memiliki beberapa fitur di ataranya adalah menejemen kelas, modul, pertemuan mingguan, latihan, ujian dan lain-lain. Selain itu aplikasi ini memiliki fasilitas <span className="badge bg-secondary">SEB</span> (Save Exam Browser) yang dapat digunakan pada evaluasi pembelajara. Evaluasi pembelajaran ini diharapkan dapat membatasi mahasiswa dalam melakukan perbuatan curang.
+                  </div>
+                  
+              </Tab>
+              <Tab eventKey="profile" title="Dosen">
+
+                  <div className="mt-2">
+                    Daftar Dosen Pengajar:
+
+                    {dosen.map((d, index) => (
+                      <ol key={index}>
+                        <li>{d.name} (<FontAwesomeIcon icon={ faEnvelope }/>  {d.email})</li>
+                      </ol>
+                    ))}
+                  </div>
+
+              </Tab>
+              <Tab eventKey="dosen" title="Pengembang">
+
+                  <div className=" mt-2">
+                    Pengembang Aplikasi:
+                      <ul className="list-unstyled">
+                        <li><FontAwesomeIcon icon={ faGithub }/> ahmadluky</li>
+                      </ul>
+                      
+                    Terima kasih atas bantuannya kepada:
+
+                    <ul className="list-unstyled">
+                        <li><FontAwesomeIcon icon={ faGithub }/> iqbal</li>
+                        <li><FontAwesomeIcon icon={ faGithub }/> iwawiwi</li>
+                    </ul>
+                  </div>
+
+              </Tab>
+          </Tabs>
 
           </div>
         </main>
@@ -48,12 +77,17 @@ export default function Home({externalPostData}) {
 
 export async function getServerSideProps(context) {
   const { req } = context;
+  const { origin } = absoluteUrl(req);
   const { data } = getAppCookies(req);  
   const profil = data ? verifyToken(data) : '';
+  const baseApiUrl = `${origin}/api/dosen`;
+  const result = await fetch(baseApiUrl)
+  const dosen = await result.json();
 
   return {
     props: {
-      profil
+      profil,
+      dosen
     },
   };
 }
