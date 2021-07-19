@@ -3,8 +3,8 @@ import CRunner from './CRunner';
 import CppRunner from './CppRunner';
 import PythonRunner from './PythonRunner';
 import appRoot from 'app-root-path';
+import { exit } from 'process';
 const path = require('path');
-
 class Factory {
     constructor() {
         this.createRunner = function createRunner(lang) 
@@ -22,51 +22,69 @@ class Factory {
     }
 }
  
-export function run(lang, code, nm_file, res) {
+export function run(lang, code, nim_id_soal, res) {
     const factory = new Factory();
     const runner = factory.createRunner(lang.toLowerCase());
     
-    const DIR_CODE = path.resolve(
+    const DIR_CODE = path.resolve( // direktori semua code
         `${appRoot}`,
         "temp"
     );
 
-    const directory = path.join(DIR_CODE, lang);
-    // const file = path.join(directory, nm_file+runner.defaultExtensionFile);
+    const DIR_SOURCE = path.resolve( // buat source file (solusi, solusitester & info) sebagai template
+        `${appRoot}`,
+        "temp",
+        lang,
+        "source"
+    );
 
+    const arr_indentias = nim_id_soal.split("_");
+    const nim=arr_indentias[0];
+    const id_soal=arr_indentias[1];
+
+    const directory = path.join(DIR_CODE, lang, id_soal, nim); // sesuai dengan bahasa pemrograman, id soal dan nim
     const file = path.resolve(directory, runner.sourceFile()); // soluis
-    const filename = path.parse(file).name; // main
     const extension = path.parse(file).ext; // .py
 
-    saveFileCode.saveCode(file, code, () => {
+    // jika belum ada
+    // pindahkan file solusi ke direktori (sesuai dengan no soal dan mhs)
+    // selainnya
+    // hanya lakukan save code dari editor
+    saveFileCode.copyDirectory(DIR_SOURCE, directory, id_soal, nim, err =>{
+        if (err) {
+            res.end(JSON.stringify({ status:99, message: err, testcase: null }));
+        }
 
-        const testFile = path.resolve(directory, runner.testFile());
-        const testFileName = path.parse(testFile).name; // main
-
-        runner.run(testFile, directory, testFileName, extension, function(
-            status,
-            message
-        ) {
-            if (status == "ok") {
-                const result = {
-                    status,
-                    message
-                };
-
-                if (message.startsWith("[Success]")) {
-                        result ['testcase'] = 'success';
+        // save code di file solusi
+        saveFileCode.saveCode(file, code,  () => {
+            const testFile = path.resolve(directory, runner.testFile());
+            const testFileName = path.parse(testFile).name; // main
+            runner.run(testFile, directory, testFileName, extension, function(
+                status,
+                message
+            ) {
+                if (status == "ok") {
+                    const result = {
+                        status,
+                        message
+                    };
+                    if (message.startsWith("[Success]")) {
+                            result ['testcase'] = 'success';
+                    } else {
+                        result ['testcase'] = 'fail';
+                    }
+                    res.end(JSON.stringify(result));
                 } else {
-                    result ['testcase'] = 'fail';
+                    const result = {
+                        status,
+                        message,
+                        testcase: null
+                    };
+                    res.end(JSON.stringify(result));
                 }
-                res.end(JSON.stringify(result));
-            } else {
-                const result = {
-                    status,
-                    message,
-                    testcase: null
-                };
-                res.end(JSON.stringify(result));
-            }
+            });
         });
+
     });
+
 }

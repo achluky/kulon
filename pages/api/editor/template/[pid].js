@@ -31,7 +31,6 @@ export default async (req, res) => {
             if (err) {
                 throw err;
             }else{
-                console.log(data.toString());
                 res.status(200).json({lang: language, code: data.toString()});
                 return;
             }

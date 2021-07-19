@@ -73,7 +73,11 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
     }
 
     // Run & compile
-    const [datarun, setDatarun] = useState({status:'', message:'', testcase:''});
+    const [datarun, setDatarun] = useState();
+    const [input, setInput] = useState();
+    const [outout, setOutout] = useState();
+    const [exspektasi, setExspektasi] = useState();
+    const [testcase, setTestcase] = useState();
     function run() {
         if (selectedLang==='') {
             setStateFormMessage({ error: true, message:'Bahasa pemrograman harus dipilih'});
@@ -90,14 +94,24 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
     async function runApi(data) {
         const result = await editorService.runCompiler(data);
         console.log(result);
-        if (result.error === false) {
-            if(result.status != 0){
-                // const error_line = result.message.split(',');
-                // console.log(error_line);
-                // setDatarun(error_line[1] + error_line[2]);
+        if(result.status == 'ok'){
+            if(result.testcase == 'fail'){
                 setDatarun(result.message);
+                const msg_ = result.message.replace('[Fail]', '');
+                const msg = msg_.split(';');
+                setTestcase(result.testcase);
+                setInput(msg[0]);
+                setExspektasi(msg[1]);
+                setOutout(msg[2]);
+
+                console.log(testcase);
+
             }else{
                 setDatarun(result.message);
+                setTestcase('');
+                setInput('');
+                setExspektasi('');
+                setOutout('');
             }
         }else{
             setDatarun(result.message);
@@ -186,11 +200,13 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                             </>
                                         ):(
                                             <>
+
                                                 {errors.lang && errors.lang.type === "required" && <>
                                                     <div className="alert alert-danger" role="alert">
                                                         <FontAwesomeIcon icon={ faTimesCircle }/> Bahasa Pemrograman Wajib Anda Isi <br /> 
                                                     </div>
                                                 </>}
+
                                                 {errors.code && errors.code.type === "required" && <>
                                                     <div className="alert alert-danger" role="alert">
                                                         <FontAwesomeIcon icon={ faTimesCircle }/> Code Program Wajib Anda Isi <br /> 
@@ -238,7 +254,7 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                                         tabSize: 2,
                                                     }}
                                                 />
-                                                <div className="btn-group mt-3">
+                                                <div className="btn-group mt-3 mb-3">
                                                     <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary mr-2">
                                                         {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-2"></span> }
                                                         {' '} <FontAwesomeIcon icon={ faSave }/> Simpan Code & Akhiri Pengerjaan Soal
@@ -260,7 +276,17 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                                 </>
                                             ):(
                                                 <>
-                                                    {datarun}
+                                                    {testcase === 'fail' ?(
+                                                        <>
+                                                            Input: {input} <br />
+                                                            Output: {outout} <br />
+                                                            Exspektasi: {exspektasi}
+                                                        </>
+                                                    ):(
+                                                        <>
+                                                            {datarun}
+                                                        </>
+                                                    )}
                                                 </>
                                             )}  
                                         </div>                            

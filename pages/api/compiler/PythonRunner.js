@@ -40,7 +40,7 @@ class PythonRunner extends Runner {
         argsRun[0] = file;
         console.log(`optionsx: ${options}`);
         console.log(`argsRun: ${argsRun}`);
-        const executor = spawn('python', argsRun, options);
+        const executor = spawn('python3', argsRun, options);
         executor.stdout.on('data', (output) => {
             // console.log(String(output));
             // callback('0', String(output)); // 0, no error
