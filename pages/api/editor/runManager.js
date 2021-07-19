@@ -33,8 +33,17 @@ export default async (req, res) => {
                 }
             )
         }else{
-            const file = req.body; // lang & code & nim_id_soal
-            run(file.lang, file.code, file.nim_id_soal, res);
+            if (req.body.lang == "python") {
+                const file = req.body; // lang & code & nim_id_soal
+                run(file.lang, file.code, file.nim_id_soal, res);
+            }else{
+                res.json(
+                    {
+                        "error": true,
+                        "message": "Maaf, saat in compiler yang tersedia baru bahasa pemrograman 'Python' "
+                    }
+                )
+            }
         }
     } else {
         res.statusCode = 401;

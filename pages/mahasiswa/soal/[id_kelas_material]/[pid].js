@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlayCircle, faSave, faWindowRestore, faTimesCircle, faCheckCircle, faGift, faCandyCane, faListAlt} from '@fortawesome/free-solid-svg-icons'
+import { faPlayCircle, faSave, faWindowRestore, faTimesCircle, faCheckCircle, faGift, faCandyCane, faListAlt, faExclamation, faExclamationTriangle} from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Link from 'next/link';
 import {
@@ -73,7 +73,7 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
     }
 
     // Run & compile
-    const [datarun, setDatarun] = useState();
+    const [datarun, setDatarun] = useState({status:'', message:'', testcase:''});
     function run() {
         if (selectedLang==='') {
             setStateFormMessage({ error: true, message:'Bahasa pemrograman harus dipilih'});
@@ -90,18 +90,24 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
     async function runApi(data) {
         const result = await editorService.runCompiler(data);
         console.log(result);
-        if(result.status != 0){
-            const error_line = result.message.split(',');
-            console.log(error_line);
-            setDatarun(error_line[1] + error_line[2]);
+        if (result.error === false) {
+            if(result.status != 0){
+                // const error_line = result.message.split(',');
+                // console.log(error_line);
+                // setDatarun(error_line[1] + error_line[2]);
+                setDatarun(result.message);
+            }else{
+                setDatarun(result.message);
+            }
         }else{
             setDatarun(result.message);
         }
     }
 
+
     // coundown 
     const [secs, setSecs] = useState(0);
-    const [mins, setMins] = useState(100)
+    const [mins, setMins] = useState(20)
     const [solusi, setSolusi] = useState(0)
 
     useEffect(() => {
@@ -147,24 +153,27 @@ export default function Soal({profil, soal, solusi_latihan, id_kelas_material}){
                                 <div className="col-sm-12">
                                     <ul className="nav nav-tabs">
                                         <li className="nav-item">
-                                            <a className="nav-link active" href="#">Deskripsi</a>
+                                            <Link href="#">
+                                                <a className="nav-link active">Deskripsi</a>
+                                            </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link disabled" href="#" >Nilai</a>
+                                            <Link href="#">
+                                                <a className="nav-link disabled">Nilai</a>
+                                            </Link>
                                         </li>
                                     </ul>
-                                    <div className="card mt-4">
 
-                                        <p className="">
-                                                Modul : {soal.nama_modul}  <br/>
-                                                Bahasa Pemrograman : {soal.bahasa_pemrograman} <br/>
-                                                Running Time : {soal.runnig_time}
-                                        </p>
-                                        <div className="card-body p-4" dangerouslySetInnerHTML={{ __html: soal.deskripsi_soal}}>
-
-
-                                        </div>
+                                    <p className="col-sm-12 highlight mt-3 rounded">
+                                        Modul : {soal.nama_modul}  <br/>
+                                        Bahasa Pemrograman : {soal.bahasa_pemrograman} <br/>
+                                        Running Time : {soal.runnig_time}
+                                    </p>
+                                    <div className="col-sm-12 highlight mt-3 rounded" style={{ whiteSpace: "pre-line" }} > {
+                                            soal.deskripsi_soal
+                                    }
                                     </div>
+
                                 </div>
                                 <div className="col-sm-12 mt-4">
                                     <form onSubmit={handleSubmit(onSubmit)}>

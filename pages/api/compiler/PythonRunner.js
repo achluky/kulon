@@ -10,10 +10,21 @@ class PythonRunner extends Runner {
         return this.defaultExtensionFile;
     }
     
+    sourceFile() {
+        return this.sourcefile;
+    }
+
+    testFile() {
+        return this.testfile;
+    }
+    
     constructor() {
         super();
         this.defaultfile = 'Hello.py';
         this.defaultExtensionFile = '.py';
+
+        this.sourcefile = "Solution.py";
+        this.testfile = "SolutionTester.py";
     }
     
     run(file, directory, filename, extension, callback) {
@@ -24,22 +35,27 @@ class PythonRunner extends Runner {
     }
     
     execute(file, directory, callback) {
-        // set working directory for child_process
         const options = { cwd: directory };
         const argsRun = [];
         argsRun[0] = file;
-
-        console.log(`options: ${options}`);
+        console.log(`optionsx: ${options}`);
         console.log(`argsRun: ${argsRun}`);
-
         const executor = spawn('python', argsRun, options);
         executor.stdout.on('data', (output) => {
-            console.log(String(output));
-            callback('0', String(output)); // 0, no error
+            // console.log(String(output));
+            // callback('0', String(output)); // 0, no error
+            const out = String(output);
+            console.log(output);
+            console.log(`pythonRunner->execute(): stdout:`);
+            if (out.startsWith("[Success]") || out.startsWith("[Fail]")) {
+                callback("ok", String(output)); // ok, no error
+            }
         });
         executor.stderr.on('data', (output) => {
+            // console.log(`stderr: ${String(output)}`);
+            // callback('2', String(output)); // 2, execution failure
             console.log(`stderr: ${String(output)}`);
-            callback('2', String(output)); // 2, execution failure
+            callback("2", String(output)); // err, execution failure
         });
         executor.on('close', (output) => {
             this.log(`stdout: ${output}`);
