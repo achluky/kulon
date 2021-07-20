@@ -43,13 +43,15 @@ class PythonRunner extends Runner {
         const executor = spawn('python3', argsRun, options);
         executor.stdout.on('data', (output) => {
             // console.log(String(output));
-            // callback('0', String(output)); // 0, no error
+            
             const out = String(output);
-            console.log(output);
+            // console.log(output);
             console.log(`pythonRunner->execute(): stdout:`);
-            if (out.startsWith("[Success]") || out.startsWith("[Fail]")) {
-                callback("ok", String(output)); // ok, no error
-            }
+            // if (out.startsWith("[Success]") || out.startsWith("[Fail]")) 
+                callback('0', String(output)); // 0, no error
+            
+            //     callback('0', String(output)); // 0, no error
+                // callback("ok", String(output)); // ok, no error
         });
         executor.stderr.on('data', (output) => {
             // console.log(`stderr: ${String(output)}`);
