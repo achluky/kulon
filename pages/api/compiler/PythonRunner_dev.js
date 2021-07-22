@@ -1,5 +1,9 @@
 import { spawn } from 'child_process';
 import Runner from './Runner';
+
+const mongoMod = require('./mongoClient')
+const db = new mongoMod.mongoDbClient()
+
 class PythonRunner extends Runner {
     defaultFile() {
         return this.defaultfile;
@@ -20,12 +24,16 @@ class PythonRunner extends Runner {
         this.sourcefile = "Solution.py";
         this.testfile = "SolutionTester.py";
     }
-    run(file, directory, filename, extension, callback) {
+    // run(file, directory, filename, extension, callback) {
+    run(file, directory, filename, extension, id_soal, nim, callback) {
         if (extension.toLowerCase() !== '.py') {
             console.log(`${file} is not a python file.`);
         }
-        this.execute(file, directory, callback);
+        const testcase = db.findOneDoc('data__soal', {'id_soal': id_soal});
+        console.log(testcase);
+        // this.execute(file, directory, callback);
     }
+
     execute(file, directory, callback) {
         const options = { cwd: directory };
         const argsRun = [];

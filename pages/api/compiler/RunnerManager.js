@@ -3,7 +3,6 @@ import CRunner from './CRunner';
 import CppRunner from './CppRunner';
 import PythonRunner from './PythonRunner';
 import appRoot from 'app-root-path';
-import { exit } from 'process';
 const path = require('path');
 class Factory {
     constructor() {
@@ -54,22 +53,32 @@ export function run(lang, code, nim_id_soal, res) {
         if (err) {
             res.end(JSON.stringify({ status:99, message: err, testcase: null }));
         }
-
         // save code di file solusi
         saveFileCode.saveCode(file, code,  () => {
-            const testFile = path.resolve(directory, runner.testFile());
+            // Aternatif 1
+            const testFile = path.resolve(directory, runner.testFile()); // file for call solusion file
             const testFileName = path.parse(testFile).name; // main
-            runner.run(testFile, directory, testFileName, extension, function(
+
+            // Alternatif 2
+            const codeFile = file
+            const codeFileName = path.parse(file).name;
+            
+            // Alternatif 1
+            runner.run(testFile, directory, testFileName, extension, function(            
+            
+            // Alternatif 2
+            // runner.run(codeFile, directory, codeFileName, extension, id_soal, nim, function(
                 status,
                 message
             ) {
-                if (status == "ok") {
+                if (status == "0") 
+                {
                     const result = {
                         status,
                         message
                     };
-                    if (message.startsWith("[Success]")) {
-                            result ['testcase'] = 'success';
+                    if (message.startsWith("Success")) {
+                        result ['testcase'] = 'success';
                     } else {
                         result ['testcase'] = 'fail';
                     }

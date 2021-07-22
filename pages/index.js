@@ -57,13 +57,7 @@ export default function Home({dosen}) {
                       <ul className="list-unstyled">
                         <li><FontAwesomeIcon icon={ faGithub }/> ahmadluky</li>
                       </ul>
-                      
-                    Terima kasih atas bantuannya kepada:
 
-                    <ul className="list-unstyled">
-                        <li><FontAwesomeIcon icon={ faGithub }/> iqbal</li>
-                        <li><FontAwesomeIcon icon={ faGithub }/> iwawiwi</li>
-                    </ul>
                   </div>
 
               </Tab>
@@ -78,15 +72,12 @@ export default function Home({dosen}) {
 export async function getServerSideProps(context) {
   const { req } = context;
   const { origin } = absoluteUrl(req);
-  const { data } = getAppCookies(req);  
-  const profil = data ? verifyToken(data) : '';
   const baseApiUrl = `${origin}/api/dosen`;
   const result = await fetch(baseApiUrl)
   const dosen = await result.json();
 
   return {
     props: {
-      profil,
       dosen
     },
   };
