@@ -41,12 +41,6 @@ export default function Home({dosen}) {
 
                   <div className="mt-2">
                     Daftar Dosen Pengajar:
-
-                    {dosen.map((d, index) => (
-                      <ol key={index}>
-                        <li>{d.name} (<FontAwesomeIcon icon={ faEnvelope }/>  {d.email})</li>
-                      </ol>
-                    ))}
                   </div>
 
               </Tab>
@@ -67,18 +61,4 @@ export default function Home({dosen}) {
         </main>
     </>
   )
-}
-
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const { origin } = absoluteUrl(req);
-  const baseApiUrl = `${origin}/api/dosen`;
-  const result = await fetch(baseApiUrl)
-  const dosen = await result.json();
-
-  return {
-    props: {
-      dosen
-    },
-  };
 }

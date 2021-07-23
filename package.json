@@ -29,6 +29,7 @@
     "multer": "^1.4.2",
     "ncp": "^2.0.0",
     "next": "11.0.1",
+    "next-useragent": "^2.6.0",
     "nextjs-progressbar": "^0.0.11",
     "prop-types": "^15.7.2",
     "python-shell": "^3.0.0",

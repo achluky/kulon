@@ -1,27 +1,33 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faTags } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faSearch, faTags } from '@fortawesome/free-solid-svg-icons'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Side from '../../components/mahasiswa_sidebar';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+import { useUserAgent } from 'next-useragent'
 import {
     absoluteUrl,
     getAppCookies,
     verifyToken
 } from '../../utility/utils';
 import Login from '../../components/login';
-import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
 
-export default function Kelas({kelas, profil}) {
+export default function Kelas({kelas, profil, uaString}) {
+    
+    let seb;
+    if (uaString.includes('SEBKULON')) {
+        seb = true;
+    } else {
+        seb = false;
+    }
+
     return(
         <div>    
             {!profil ? (
                 <Login/>
             ) : (            
                 <div className="row">
-                    <div className="col-sm-3">
-                        <Side />
-                    </div>
-                    <div className="col-sm-9">
+                    <div className="col-sm-12">
                         <div className="col-sm-12">
                             <nav className="navbar navbar-light bg-light mb-3">
                                 <div className="container-fluid">
@@ -29,6 +35,10 @@ export default function Kelas({kelas, profil}) {
                                     <div className="float-end">
                                         <Link href="/mahasiswa/kelas/all">
                                             <button type="button" className="btn btn-primary btn-sm"><FontAwesomeIcon icon={ faSearch }/> Cari Kelas </button>
+                                        </Link>
+
+                                        <Link href="/mahasiswa/kelas/all">
+                                            <button type="button" className="btn btn-primary btn-sm ms-2"><FontAwesomeIcon icon={ faHome }/> Beranda </button>
                                         </Link>
                                     </div>
                                 </div>
@@ -40,10 +50,10 @@ export default function Kelas({kelas, profil}) {
                                         <thead>
                                             <tr>
                                             <th scope="col" width={10}>No.</th>
-                                            <th scope="col">Kelas</th>
-                                            <th scope="col">Semester</th>
-                                            <th scope="col">Program Studi</th>
-                                            <th scope="col" width={245}>Aksi</th>
+                                            <th scope="col" width={200}>Kelas</th>
+                                            <th scope="col" width={200}>Semester</th>
+                                            <th scope="col" width={300}>Program Studi</th>
+                                            <th scope="col">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -55,16 +65,27 @@ export default function Kelas({kelas, profil}) {
                                                 <td>{kls.nama_prodi}</td>
                                                 <td>
                                                     <div className="btn-group" role="group" aria-label="Basic example">
-                                                        <Link href={"/mahasiswa/kelas/detail/"+kls.id_kelas+""}>
-                                                            <button type="button" className="btn btn-primary btn-sm">
-                                                                <FontAwesomeIcon icon={ faSearch }/> Detail 
-                                                            </button>
-                                                        </Link>
-                                                        <Link href={"/mahasiswa/kelas/latihan/"+kls.id_kelas+""}>
-                                                            <button type="button" className="btn btn-info btn-sm">
-                                                                <FontAwesomeIcon icon={ faTags }/> Latihan 
-                                                            </button>
-                                                        </Link>
+                                                        {seb==false ? (
+                                                            <>
+                                                            <Link href={"/mahasiswa/kelas/detail/"+kls.id_kelas+""}>
+                                                                <button type="button" className="btn btn-primary btn-sm">
+                                                                    <FontAwesomeIcon icon={ faSearch }/> Detail 
+                                                                </button>
+                                                            </Link>
+                                                            <Link href={"/mahasiswa/kelas/latihan/"+kls.id_kelas+""}>
+                                                                <button type="button" className="btn btn-info btn-sm">
+                                                                    <FontAwesomeIcon icon={ faTags }/> Latihan 
+                                                                </button>
+                                                            </Link>
+                                                            </>
+                                                        ):(
+                                                            <Link href={"/mahasiswa/kelas/latihan/"+kls.id_kelas+""}>
+                                                                <button type="button" className="btn btn-info btn-sm">
+                                                                    <FontAwesomeIcon icon={ faTags }/> Latihan 
+                                                                </button>
+                                                            </Link>
+                                                        )}
+                                                        
                                                         {kls.status==1 ? (
                                                             <>
                                                                 <button type="button" className="btn btn-danger btn-sm">
@@ -94,7 +115,6 @@ export async function getServerSideProps(context) {
 
     /**
      * Ketika Kelas diset tidak aktif oleh dosen atau mhs tersebut lulus maka mhs tersebut diupdate status latihanya adalah tidak aktif pada dokumen: data__kelas_mahasiswa
-     *  
      **/
     const { req } = context;
     const { origin } = absoluteUrl(req);
@@ -109,6 +129,7 @@ export async function getServerSideProps(context) {
         props: {
             profil,
             kelas: kelas,
+            uaString: context.req.headers['user-agent']
         },
     };
 }
